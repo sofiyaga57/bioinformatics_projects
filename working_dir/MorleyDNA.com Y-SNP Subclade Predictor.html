@@ -1,0 +1,1221 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+<meta content="utf-8" http-equiv="encoding">
+<title>MorleyDNA.com Y-SNP Subclade Predictor</title>
+<link rel="stylesheet" type="text/css" href="tree.css">
+<link rel="stylesheet" type="text/css" href="layout.css">
+<style type="text/css" media="print">
+ div { display: none; }
+</style>
+<script  nonce='742fc2c2458c2cd098466d53aae9d0931b48f4efc58125ef724810f3df79723ccaf8346980bbe9de65bf1d2bb1428a6db526770c8869a5bdd28399d511a85d73'  >
+//http://stackoverflow.com/questions/7410949/javascript-document-getelementsbyclassname-compatibility-with-ie
+function getElementsByClassName(node, classname) {
+    var a = [];
+    var re = new RegExp('(^| )'+classname+'( |$)');
+    var els = node.getElementsByTagName("*");
+    for(var i=0,j=els.length; i<j; i++)
+        if(re.test(els[i].className))a.push(els[i]);
+    return a;
+}//return getElementsByClassName
+
+function changePredTableFocusHelper(e) {
+    changePredTableFocus(e.target.getAttribute("row"), e.target.getAttribute("hap"));
+}
+
+
+
+function changePredTableFocus(r, cl) {
+	//var selRows = document.getElementsByClassName("sel-row");
+	var selRows = getElementsByClassName(document.body, "sel-row");
+	
+	for (var row in selRows) selRows[row].className = "predTable";
+	document.getElementById("predTable-" + r).className = "predTable sel-row";
+	
+	//var ascentDivs = document.getElementsByClassName("ascent");
+	var ascentDivs = getElementsByClassName(document.body, "ascent");
+	for (var i = 0; i < ascentDivs.length; i++) {
+		//ascentDivs[i].style.display="none";
+		ascentDivs[i].className = "ascent hidden";
+		}
+	//document.getElementById("ascent-" + r).style.display="inline";
+	document.getElementById("ascent-" + r).className = "ascent visible";
+
+	//var candRows = document.getElementById("ascent-" + r).getElementsByClassName("pred-subclade");
+	var candRows = getElementsByClassName(document.getElementById("ascent-" + r), "pred-subclade");
+	
+	for(var i = 0; i < candRows.length; i++) {
+		if(candRows[i].children[0].innerHTML == cl) candRows[i].className = "pred-subclade sel-subclade";
+		else candRows[i].className = "pred-subclade";
+	}
+	
+	//document.getElementById("ascent-" + r).scrollTop = 0;
+	document.getElementById("ascent-" + r + "-top").scrollIntoView();
+	
+	
+	if(typeof _paq != "undefined" && _paq !== null) _paq.push(["trackEvent", "changePrediction", "click"]);
+	
+}
+
+function showSummaryModal() {
+	document.getElementById("summary-modal-outer").style.display= "unset";
+	document.getElementById("summary-modal-textarea").select();
+}
+
+function closeSummaryModal() {
+	document.getElementById("summary-modal-outer").style.display= "none";
+}
+
+function t(a,b) {
+//ga("send", "event", "LogDownload", a, b, 1);
+//var _paq = _paq || [];
+_paq.push(["trackEvent", b, a]);
+}
+function d(a,b) {
+//ga("send", "event", "LogDonate", a, b, 1);
+//var _paq = _paq || [];
+_paq.push(["trackEvent", b, a]);
+}
+</script>
+</head><body scroll = 'no'>
+
+<div id='no-header'>
+<div id='header'><h1 style="display:inline;font-size:1.25em;">
+MorleyDNA.com Y-SNP Terminal Subclade Predictor, using
+
+
+<a href="https://ytree.morleydna.com//experimental-phylogeny" id="downloadPhylo3"  target="_blank">Experimental tree (
+<script  nonce='742fc2c2458c2cd098466d53aae9d0931b48f4efc58125ef724810f3df79723ccaf8346980bbe9de65bf1d2bb1428a6db526770c8869a5bdd28399d511a85d73' >
+    document.getElementById("downloadPhylo3").addEventListener('click', function() {/*ga('send', 'event', 'LogDownload', 'PDFDownload', 'Phylogeny', 0);*/_paq.push(['trackEvent', 'PDFDownload', 'click']);});
+</script>
+
+26 July 2013)
+</a>
+</h1>
+<div style="position:absolute; top:0px; right:0px;"><button id='ReturnToInput'>Return to input form</button></div>
+
+
+
+</div>
+<div id="mid">
+	<div id="mid-left">
+	<a href="faq" target="_blank">Frequently asked questions</a>
+	<br><a href="#" id="summary-modal-show">Show summary</a>
+<hr><form><table border=1 style='background-color:#FFFFFF;' width='18%'><thead><tr><th rowspan = 2>Examine</th><th> Suggested subclade</th></tr><tr><td>Long name<P>Short name(s)</td></tr></thead><tbody><tr class = 'predTable' id='predTable-0'><td><input  type='radio' name='selPTShg' class='predTableRadio' row = '0' hap='R1a1a'  value='R1a1a' /><br>(most likely)</td><td>R1a1a<p>R1a-L168 (R1a-M17, R1a-M198)</td></tr>
+<tr class = 'predTable' id='predTable-1'><td><input  type='radio' name='selPTShg' class='predTableRadio' row = '1' hap='M3'  value='M3' /></td><td>M3<p>M-P117 (M-P118)</td></tr>
+<tr class = 'predTable' id='predTable-2'><td><input  type='radio' name='selPTShg' class='predTableRadio' row = '2' hap='K'  value='K' /></td><td>K<p>K-PF5504 (K-PF5493, K-PF5480)</td></tr>
+<tr class = 'predTable' id='predTable-3'><td><input  type='radio' name='selPTShg' class='predTableRadio' row = '3' hap='R1b1a2a1a2a1b3~2'  value='R1b1a2a1a2a1b3~2' /></td><td>R1b1a2a1a2a1b3~2<p>R1b-L421 (R1b-L433, R1b-L88)</td></tr>
+<tr class = 'predTable' id='predTable-4'><td><input  type='radio' name='selPTShg' class='predTableRadio' row = '4' hap='N1a'  value='N1a' /></td><td>N1a<p>N-M96 (N-CTS7095, N-P189)</td></tr>
+</tbody></table></form></div>
+<div id="mid-rightPane"><div id = "mid-cen"><div class = 'ascent hidden' id='ascent-0' style='position:relative;'><h4 id = 'ascent-0-top' style='display:inline;'>Examining: R1a1a [R1a-L168 (R1a-M17, R1a-M198)]</h4><P>This suggested classification does not account for the following positive SNPs: <BR><textarea rows = 5 cols = 50 spellcheck='false' autocomplete='off'>CLFY16971
+CLFY18665
+CLFY4966
+CTS11948
+CTS12028
+CTS3229
+CTS4557
+CTS5808
+CTS5815
+CTS6327
+CTS8626
+F1857
+FB1947
+FB988
+FGC12056
+FGC199
+FGC24468
+FGC38
+FGC54
+FGC77
+FN1317
+FN495
+FN591
+FN833
+L1346
+L486
+L88
+L882
+M1185
+M1188
+M1189
+M1219
+M1226
+M1239
+M1272
+M141
+M2695
+M288
+M3639
+M3683
+M3698
+M3707
+M3735
+M3749
+M3771
+M5705
+M672
+M696
+M74
+M9118
+M9336
+M96
+N12
+P102
+P103
+P117
+P222
+P239
+P32
+P38
+P80
+PAGES00026
+PAGES00029
+PAGES00037
+PAGES00038
+PAGES00081
+PF1580
+PF2587
+PF2660
+PF2669
+PF2673
+PF2679
+PF2686
+PF2692
+PF2703
+PF2720
+PF2730
+PF2771
+PF2775
+PF3558
+PF3708
+PF518
+PF5505
+PF5506
+PF5861
+PF5863
+PF5870
+PF5896
+PF5901
+PF5915
+PF5930
+PF5934
+PF5951
+PF5963
+PF5977
+PF6036
+PF6050
+PF6126
+PF6147
+PF6234
+PF6240
+PF6276
+PF:14231292(A|G)
+PF:14432928(A|G)
+PF:14639427(C|A)
+PF:14692227(C|T)
+PF:14958218(C|T)
+PF:14993358(G|A)
+PF:15027529(T|G)
+PF:15086183(C|G)
+PF:16492547(T|C)
+PF:16971648(G|T)
+PF:18026855(A|G)
+PF:18109555(A|C)
+PF:18656508(C|G)
+PF:18865298(T|C)
+PF:18914441(T|C)
+PF:19179540(A|G)
+PF:21409706(C|G)
+PF:21410840(T|G)
+PF:22190371(G|A)
+PF:22739367(C|T)
+PF:23476936(T|G)
+PF:28590278(A|G)
+PF:28733101(G|C)
+PF:2887824(A|C)
+S118
+S24307
+S26596
+S26597
+S26598
+S27130
+S27150
+S27154
+S27177
+S27244
+S27310
+S27390
+S27470
+S27500
+S27554
+S27700
+U250
+YSC0000222
+YSC0001265
+Z11996
+Z8133
+Z8143
+Z8146</textarea><BR><P><div class='tree ' style = 'padding-left: 0px;'><span class='tree-hap not-geno-tested'>Root (Y-Adam)</span>&nbsp;&nbsp;</div>
+<div class='tree ' style = 'padding-left: 10px;'><span class='tree-hap not-geno-tested'>A0-T</span>&nbsp;&nbsp;<span class="snp  snp-notGenoTested "><span>AF3</span></span>, <span class="snp  snp-notGenoTested "><span>L1085</span></span>, <span class="snp  snp-notGenoTested "><span>L1089</span></span>, <span class="snp  snp-notGenoTested "><span>L1090</span></span>, <span class="snp  snp-notGenoTested "><span>L1093</span></span>, <span class="snp  snp-notGenoTested "><span>L1095</span></span>, <span class="snp  snp-notGenoTested "><span>L1098</span></span>, <span class="snp  snp-notGenoTested "><span>L1099</span></span>, <span class="snp  snp-notGenoTested "><span>L1101</span></span>, <span class="snp  snp-notGenoTested "><span>L1105</span></span>, <span class="snp  snp-notGenoTested "><span>L1116</span></span>, <span class="snp  snp-notGenoTested "><span>L1118</span></span>, <span class="snp  snp-notGenoTested "><span>L1120</span></span>, <span class="snp  snp-notGenoTested "><span>L1121</span></span>, <span class="snp  snp-notGenoTested "><span>L1123</span></span>, <span class="snp  snp-notGenoTested "><span>L1124</span></span>, <span class="snp  snp-notGenoTested "><span>L1125</span></span>, <span class="snp  snp-notGenoTested "><span>L1127</span></span>, <span class="snp  snp-notGenoTested "><span>L1128</span></span>, <span class="snp  snp-notGenoTested "><span>L1129</span></span>, <span class="snp  snp-notGenoTested "><span>L1130</span></span>, <span class="snp  snp-notGenoTested "><span>L1132</span></span>, <span class="snp  snp-notGenoTested "><span>L1135</span></span>, <span class="snp  snp-notGenoTested "><span>L1136</span></span>, <span class="snp  snp-notGenoTested "><span>L1137</span></span>, <span class="snp  snp-notGenoTested "><span>L1142</span></span>, <span class="snp  snp-notGenoTested "><span>L1143</span></span>, <span class="snp  snp-notGenoTested "><span>L1145</span></span>, <span class="snp  snp-notGenoTested "><span>L1150</span></span>, <span class="snp  snp-notGenoTested "><span>L1155</span></span>, <span class="snp  snp-notGenoTested "><span>L1235</span></span></div>
+<div class='tree ' style = 'padding-left: 20px;'><span class='tree-hap '>A1</span>&nbsp;&nbsp;<span class="snp  "><span>CTS3331</span></span>, <span class="snp  "><span>P305</span></span>, <span class="snp  "><span>V168</span></span>, <span class="snp  "><span>V171</span></span>, <span class="snp  "><span>V174</span></span>, <span class="snp  "><span>V238</span></span>, <span class="snp  "><span>V241</span></span>, <span class="snp  "><span>V250</span></span>, <span class="snp  snp-notGenoTested "><span>L985</span></span>, <span class="snp  snp-notGenoTested "><span>L986</span></span>, <span class="snp  snp-notGenoTested "><span>L989</span></span>, <span class="snp  snp-notGenoTested "><span>L1002</span></span>, <span class="snp  snp-notGenoTested "><span>L1003</span></span>, <span class="snp  snp-notGenoTested "><span>L1004</span></span>, <span class="snp  snp-notGenoTested "><span>L1005</span></span>, <span class="snp  snp-notGenoTested "><span>L1009</span></span>, <span class="snp  snp-notGenoTested "><span>L1013</span></span>, <span class="snp  snp-notGenoTested "><span>L1053</span></span>, <span class="snp  snp-notGenoTested "><span>L1084</span></span>, <span class="snp  snp-notGenoTested "><span>L1112</span></span>, <span class="snp  snp-notGenoTested "><span>L1153</span></span>, <span class="snp  snp-notGenoTested "><span>V161</span><sup>R</sup></span>&nbsp;<span class='tree-scores'></span></div>
+<div class='tree ' style = 'padding-left: 30px;'><span class='tree-hap '>A1b</span>&nbsp;&nbsp;<span class="snp  "><span>P108</span></span>, <span class="snp  "><span>V221</span></span>&nbsp;<span class='tree-scores'></span></div>
+<div class='tree ' style = 'padding-left: 40px;'><span class='tree-hap '>BT</span>&nbsp;&nbsp;<span class="snp  "><span>M139</span></span>, <span class="snp snp-pos "><span>M42</span></span>, <span class="snp snp-pos "><span>M94</span>/<span>PF1081</span></span>, <span class="snp  "><span>L440</span></span>, <span class="snp  "><span>L1061</span>/<span>PF1101</span></span>, <span class="snp  "><span>L1062</span>/<span>PF302</span></span>, <span class="snp snp-pos "><span>PK1</span></span>, <span class="snp  "><span>PF1407</span>/<span>V29</span></span>, <span class="snp  "><span>PF1411</span>/<span>V59</span></span>, <span class="snp  "><span>PF1412</span>/<span>V64</span></span>, <span class="snp  "><span>PF1406</span>/<span>V102</span></span>, <span class="snp  "><span>V187</span></span>, <span class="snp  snp-notGenoTested "><span>L413</span>/<span>PF1409</span>/<span>V31</span></span>, <span class="snp  snp-notGenoTested "><span>L418</span></span>, <span class="snp  snp-notGenoTested "><span>L438</span></span>, <span class="snp  snp-notGenoTested "><span>L604</span>/<span>PF1243</span></span>, <span class="snp  snp-notGenoTested "><span>L957</span></span>, <span class="snp  snp-notGenoTested "><span>L962</span></span>, <span class="snp  snp-notGenoTested "><span>L969</span></span>, <span class="snp  snp-notGenoTested "><span>L970</span>/<span>PF1065</span></span>, <span class="snp  snp-notGenoTested "><span>L971</span></span>, <span class="snp  snp-notGenoTested "><span>L977</span></span>, <span class="snp  snp-notGenoTested "><span>L1060</span>/<span>PF1021</span></span>, <span class="snp  snp-notGenoTested "><span>M91</span></span>, <span class="snp snp-pos "><span>M299</span></span>, <span class="snp  snp-notGenoTested "><span>P97</span></span>, <span class="snp snp-neg "><span>PAGE65</span>/<span>SRY1532</span>/<span>SRY10831</span><sup>R</sup></span>, <span class="snp  snp-notGenoTested "><span>V202</span></span>, <span class="snp  snp-notGenoTested "><span>PF1410</span>/<span>V235</span></span>&nbsp;<span class='tree-scores'></span></div>
+<div class='tree ' style = 'padding-left: 50px;'><span class='tree-hap '>CT</span>&nbsp;&nbsp;<span class="snp  "><span>PF1269</span></span>, <span class="snp  "><span>PF258</span></span>, <span class="snp  "><span>CTS125</span></span>, <span class="snp  "><span>CTS5318</span></span>, <span class="snp  "><span>PF954</span></span>, <span class="snp snp-pos "><span>M294</span></span>, <span class="snp  "><span>PF779</span></span>, <span class="snp  "><span>PF110</span></span>, <span class="snp  "><span>PF821</span></span>, <span class="snp  "><span>PF1276</span></span>, <span class="snp  "><span>V189</span></span>, <span class="snp  "><span>PF192</span></span>, <span class="snp  "><span>CTS10362</span></span>, <span class="snp  "><span>CTS109</span></span>, <span class="snp  "><span>CTS11358</span></span>, <span class="snp  "><span>CTS11575</span></span>, <span class="snp  "><span>CTS1996</span></span>, <span class="snp  "><span>CTS3431</span></span>, <span class="snp  "><span>CTS3662</span></span>, <span class="snp  "><span>CTS4364</span></span>, <span class="snp  "><span>CTS4368</span></span>, <span class="snp  "><span>CTS4740</span></span>, <span class="snp  "><span>CTS5457</span></span>, <span class="snp  "><span>CTS5532</span></span>, <span class="snp  "><span>CTS6383</span></span>, <span class="snp  "><span>CTS6800</span></span>, <span class="snp  "><span>CTS6907</span></span>, <span class="snp  "><span>CTS7922</span></span>, <span class="snp  "><span>CTS7933</span></span>, <span class="snp  "><span>CTS8243</span></span>, <span class="snp  "><span>CTS8980</span></span>, <span class="snp  "><span>CTS9828</span></span>, <span class="snp snp-pos "><span>M168</span>/<span>PF1416</span></span>, <span class="snp  "><span>PF1016</span></span>, <span class="snp  "><span>PF1029</span></span>, <span class="snp  "><span>PF1031</span></span>, <span class="snp  "><span>PF1040</span></span>, <span class="snp  "><span>PF1046</span></span>, <span class="snp  "><span>PF1061</span></span>, <span class="snp  "><span>PF1092</span></span>, <span class="snp  "><span>PF1097</span></span>, <span class="snp  "><span>PF1203</span></span>, <span class="snp  "><span>PF210</span></span>, <span class="snp  "><span>PF212</span></span>, <span class="snp  "><span>PF223</span></span>, <span class="snp  "><span>PF234</span></span>, <span class="snp  "><span>PF263</span></span>, <span class="snp  "><span>PF272</span></span>, <span class="snp  "><span>PF278</span></span>, <span class="snp  "><span>PF292</span></span>, <span class="snp  "><span>PF316</span></span>, <span class="snp  "><span>PF325</span></span>, <span class="snp  "><span>PF342</span></span>, <span class="snp  "><span>PF500</span></span>, <span class="snp  "><span>PF667</span></span>, <span class="snp  "><span>PF719</span></span>, <span class="snp  "><span>PF725</span></span>, <span class="snp  "><span>PF796</span></span>, <span class="snp  "><span>PF803</span></span>, <span class="snp  "><span>PF815</span></span>, <span class="snp  "><span>PF840</span></span>, <span class="snp  "><span>PF844</span></span>, <span class="snp  "><span>PF892</span></span>, <span class="snp  "><span>PF937</span></span>, <span class="snp  "><span>PF951</span></span>, <span class="snp  "><span>PF970</span></span>, <span class="snp  "><span>V52</span></span>, <span class="snp  "><span>V9</span></span>, <span class="snp  snp-notGenoTested "><span>P9</span><sup>R</sup></span>&nbsp;<span class='tree-scores'></span></div>
+<div class='tree ' style = 'padding-left: 60px;'><span class='tree-hap not-geno-tested'>CF</span>&nbsp;&nbsp;<span class="snp snp-pos "><span>P143</span></span></div>
+<div class='tree ' style = 'padding-left: 70px;'><span class='tree-hap '>F</span>&nbsp;&nbsp;<span class="snp  "><span>F2048</span></span>, <span class="snp snp-pos "><span>PF2745</span></span>, <span class="snp  "><span>F2075</span></span>, <span class="snp  "><span>PF2631</span></span>, <span class="snp  "><span>F1320</span></span>, <span class="snp  "><span>F2142</span></span>, <span class="snp  "><span>F1302</span></span>, <span class="snp  "><span>F3111</span></span>, <span class="snp  "><span>F2710</span></span>, <span class="snp  "><span>F2985</span></span>, <span class="snp  "><span>L498</span></span>, <span class="snp  "><span>PF2599</span></span>, <span class="snp  "><span>CTS11726</span></span>, <span class="snp snp-pos "><span>CTS12632</span></span>, <span class="snp  "><span>CTS3536</span></span>, <span class="snp  "><span>CTS3654</span></span>, <span class="snp snp-neg "><span>CTS3868</span></span>, <span class="snp  "><span>CTS3996</span></span>, <span class="snp  "><span>CTS4443</span></span>, <span class="snp  "><span>CTS6135</span></span>, <span class="snp  "><span>F1046</span></span>, <span class="snp  "><span>F1209</span></span>, <span class="snp  "><span>F1329</span></span>, <span class="snp  "><span>F1704</span></span>, <span class="snp  "><span>F1714</span></span>, <span class="snp  "><span>F1753</span></span>, <span class="snp snp-pos "><span>F1767</span></span>, <span class="snp  "><span>F2155</span></span>, <span class="snp  "><span>F2402</span></span>, <span class="snp  "><span>F2587</span></span>, <span class="snp  "><span>F2688</span></span>, <span class="snp  "><span>F2837</span></span>, <span class="snp  "><span>F2993</span></span>, <span class="snp  "><span>F3136</span></span>, <span class="snp  "><span>F3335</span></span>, <span class="snp  "><span>F3556</span></span>, <span class="snp  "><span>F3692</span></span>, <span class="snp  "><span>F719</span></span>, <span class="snp snp-pos "><span>L350</span></span>, <span class="snp  "><span>L468</span></span>, <span class="snp snp-pos "><span>L470</span></span>, <span class="snp snp-pos "><span>PF2591</span></span>, <span class="snp  "><span>PF2593</span></span>, <span class="snp  "><span>PF2600</span></span>, <span class="snp  "><span>PF2608</span></span>, <span class="snp  "><span>PF2611</span></span>, <span class="snp  "><span>PF2615</span></span>, <span class="snp  "><span>PF2624</span></span>, <span class="snp  "><span>PF2643</span></span>, <span class="snp  "><span>PF2747</span></span>, <span class="snp  "><span>PF2748</span></span>, <span class="snp  "><span>PF2749</span></span>, <span class="snp  "><span>PF2770</span></span>, <span class="snp  "><span>V186</span></span>, <span class="snp  "><span>V205</span></span>, <span class="snp  "><span>L132</span><sup>R</sup></span>, <span class="snp snp-pos "><span>M89</span>/<span>PF2746</span></span>, <span class="snp  "><span>M235</span>/<span>PAGE80</span>/<span>PF2665</span></span>, <span class="snp snp-pos "><span>PF2704</span>/<span>P14</span></span>, <span class="snp snp-pos "><span>PF2741</span>/<span>P135</span></span>, <span class="snp snp-pos "><span>PF2762</span>/<span>P136</span></span>, <span class="snp snp-pos "><span>PF2655</span>/<span>P138</span></span>, <span class="snp snp-pos "><span>PF2602</span>/<span>P141</span></span>, <span class="snp snp-pos "><span>PF2617</span>/<span>P145</span></span>, <span class="snp  "><span>PF2623</span>/<span>P146</span></span>, <span class="snp snp-pos "><span>PF2734</span>/<span>P148</span></span>, <span class="snp snp-pos "><span>PF2625</span>/<span>P151</span></span>, <span class="snp  "><span>PF2706</span>/<span>P158</span></span>, <span class="snp snp-pos "><span>PF2717</span>/<span>P159</span></span>, <span class="snp snp-pos "><span>PF2618</span>/<span>P160</span></span>, <span class="snp snp-pos "><span>PF2702</span>/<span>P166</span></span>, <span class="snp  "><span>PF2632</span>/<span>P187</span></span>, <span class="snp snp-pos "><span>M213</span>/<span>P137</span>/<span>PAGE38</span></span>, <span class="snp  snp-notGenoTested "><span>P133</span></span>, <span class="snp  snp-notGenoTested "><span>P134</span></span>, <span class="snp  snp-notGenoTested "><span>P139</span></span>, <span class="snp snp-pos "><span>P140</span></span>, <span class="snp  snp-notGenoTested "><span>P142</span></span>, <span class="snp snp-pos "><span>P149</span></span>, <span class="snp snp-pos "><span>P157</span></span>, <span class="snp  snp-notGenoTested "><span>P161</span></span>, <span class="snp snp-pos "><span>P163</span></span>, <span class="snp  snp-notGenoTested "><span>P316</span></span>&nbsp;<span class='tree-scores'></span></div>
+<div class='tree ' style = 'padding-left: 80px;'><span class='tree-hap '>IJK</span>&nbsp;&nbsp;<span class="snp  "><span>M523</span>/<span>L15</span>/<span>PF3492</span>/<span>S137</span></span>, <span class="snp  "><span>M522</span>/<span>L16</span>/<span>PF3493</span>/<span>S138</span></span>&nbsp;<span class='tree-scores'></span></div>
+<div class='tree pred-subclade' style = 'padding-left: 90px;'><span class='tree-hap '>K</span>&nbsp;&nbsp;<span class="snp snp-pos "><span>PF5504</span>/<span>P128</span></span>, <span class="snp snp-pos "><span>PF5493</span>/<span>P131</span></span>, <span class="snp snp-pos "><span>PF5480</span>/<span>P132</span></span>, <span class="snp snp-pos "><span>M9</span></span>&nbsp;<span class='tree-scores'></span></div>
+<div class='tree ' style = 'padding-left: 100px;'><span class='tree-hap '>K(xLT)</span>&nbsp;&nbsp;<span class="snp  "><span>M526</span>/<span>PF5979</span></span>&nbsp;<span class='tree-scores'></span></div>
+<div class='tree ' style = 'padding-left: 110px;'><span class='tree-hap '>P</span>&nbsp;&nbsp;<span class="snp  "><span>F180</span></span>, <span class="snp  "><span>F332</span></span>, <span class="snp  "><span>P207</span>/<span>P27</span></span>, <span class="snp snp-pos "><span>PF5869</span></span>, <span class="snp  "><span>F647</span></span>, <span class="snp  "><span>PF5956</span></span>, <span class="snp snp-pos "><span>P244</span></span>, <span class="snp  "><span>YSC0000186</span></span>, <span class="snp  "><span>YSC0000270</span></span>, <span class="snp  "><span>CTS10168</span></span>, <span class="snp  "><span>CTS3135</span></span>, <span class="snp  "><span>CTS3358</span></span>, <span class="snp  "><span>CTS4437</span></span>, <span class="snp  "><span>CTS5884</span></span>, <span class="snp snp-pos "><span>F115</span></span>, <span class="snp  "><span>F212</span></span>, <span class="snp  "><span>F29</span></span>, <span class="snp snp-pos "><span>F313</span></span>, <span class="snp  "><span>F344</span></span>, <span class="snp  "><span>F359</span></span>, <span class="snp  "><span>F4</span></span>, <span class="snp  "><span>F506</span></span>, <span class="snp snp-pos "><span>F556</span></span>, <span class="snp  "><span>F640</span></span>, <span class="snp  "><span>F671</span></span>, <span class="snp snp-pos "><span>F83</span></span>, <span class="snp  "><span>L471</span>/<span>PF5989</span></span>, <span class="snp  "><span>L721</span>/<span>PF6020</span></span>, <span class="snp  "><span>L768</span>/<span>PF5976</span>/<span>YSC0000274</span></span>, <span class="snp  "><span>L779</span>/<span>PF5907</span>/<span>YSC0000251</span></span>, <span class="snp  "><span>L82</span></span>, <span class="snp snp-pos "><span>M45</span>/<span>PF5962</span></span>, <span class="snp snp-pos "><span>P284</span></span>, <span class="snp snp-pos "><span>PAGES00083</span></span>, <span class="snp  "><span>PF5465</span></span>, <span class="snp  "><span>PF5468</span></span>, <span class="snp  "><span>PF5471</span></span>, <span class="snp  "><span>PF5851</span></span>, <span class="snp  "><span>PF5853</span></span>, <span class="snp  "><span>PF5854</span></span>, <span class="snp  "><span>PF5865</span></span>, <span class="snp  "><span>PF5871</span></span>, <span class="snp  "><span>PF5882</span></span>, <span class="snp  "><span>PF5886</span></span>, <span class="snp  "><span>PF5887</span></span>, <span class="snp  "><span>PF5888</span></span>, <span class="snp  "><span>PF5957</span></span>, <span class="snp  "><span>PF5964</span></span>, <span class="snp  "><span>PF5965</span></span>, <span class="snp snp-pos "><span>PF5982</span></span>, <span class="snp  "><span>YSC0000176</span></span>, <span class="snp  "><span>YSC0000205</span></span>, <span class="snp  "><span>YSC0000227</span></span>, <span class="snp  "><span>YSC0000279</span></span>, <span class="snp  "><span>L781</span>/<span>PF5875</span>/<span>YSC0000255</span></span>, <span class="snp snp-pos "><span>PF5879</span>/<span>P226</span></span>, <span class="snp snp-pos "><span>PF5927</span>/<span>P228</span></span>, <span class="snp snp-pos "><span>PF5925</span>/<span>P230</span></span>, <span class="snp snp-pos "><span>PF5946</span>/<span>P235</span></span>, <span class="snp snp-pos "><span>PF5873</span>/<span>P237</span></span>, <span class="snp snp-pos "><span>PF5897</span>/<span>P240</span></span>, <span class="snp snp-pos "><span>PF5874</span>/<span>P243</span></span>, <span class="snp snp-pos "><span>PF5941</span>/<span>P281</span></span>, <span class="snp snp-pos "><span>PF5932</span>/<span>P282</span></span>, <span class="snp snp-pos "><span>PF5966</span>/<span>P283</span></span>, <span class="snp snp-pos "><span>PF5866</span>/<span>P295</span>/<span>S8</span></span>, <span class="snp  "><span>L536</span>/<span>PF5860</span></span>&nbsp;<span class='tree-scores'></span></div>
+<div class='tree ' style = 'padding-left: 120px;'><span class='tree-hap '>R</span>&nbsp;&nbsp;<span class="snp  "><span>YSC0000232</span></span>, <span class="snp  "><span>F652</span></span>, <span class="snp  "><span>L747</span></span>, <span class="snp  "><span>F295</span></span>, <span class="snp  "><span>F33</span></span>, <span class="snp  "><span>F356</span></span>, <span class="snp  "><span>F47</span></span>, <span class="snp  "><span>F63</span></span>, <span class="snp  "><span>F82</span></span>, <span class="snp  "><span>PF5953</span></span>, <span class="snp  "><span>PF6063</span></span>, <span class="snp  "><span>YSC0000067</span></span>, <span class="snp  "><span>YSC0000179</span></span>, <span class="snp  "><span>YSC0000201</span></span>, <span class="snp  "><span>YSC0000233</span></span>, <span class="snp snp-pos "><span>M207</span>/<span>PAGE37</span>/<span>PF6038</span>/<span>UTY2</span></span>, <span class="snp snp-pos "><span>PF6019</span>/<span>P229</span></span>, <span class="snp snp-pos "><span>P232</span></span>, <span class="snp snp-pos "><span>PF6068</span>/<span>P280</span></span>, <span class="snp  "><span>PF6059</span>/<span>P285</span></span>, <span class="snp snp-pos "><span>P224</span></span>, <span class="snp snp-neg "><span>P227</span></span>, <span class="snp  snp-notGenoTested "><span>S4</span></span>, <span class="snp  snp-notGenoTested "><span>S9</span></span>&nbsp;<span class='tree-scores'></span></div>
+<div class='tree ' style = 'padding-left: 130px;'><span class='tree-hap '>R1</span>&nbsp;&nbsp;<span class="snp  "><span>PF6007</span></span>, <span class="snp  "><span>F211</span></span>, <span class="snp  "><span>F378</span></span>, <span class="snp  "><span>F93</span></span>, <span class="snp  "><span>PF6145</span></span>, <span class="snp  "><span>YSC0000182</span></span>, <span class="snp  "><span>YSC0000207</span></span>, <span class="snp  "><span>YSC0000230</span></span>, <span class="snp  "><span>YSC0000288</span></span>, <span class="snp snp-pos "><span>PF6128</span>/<span>P225</span></span>, <span class="snp snp-pos "><span>PF6142</span>/<span>P233</span></span>, <span class="snp snp-neg "><span>PF6137</span>/<span>P236</span></span>, <span class="snp  "><span>PF6113</span>/<span>P242</span></span>, <span class="snp  "><span>PF6117</span>/<span>P245</span></span>, <span class="snp  "><span>PF6136</span>/<span>P286</span></span>, <span class="snp snp-pos "><span>PF6115</span>/<span>P328</span></span>, <span class="snp snp-pos "><span>M173</span>/<span>P241</span>/<span>PAGE29</span></span>, <span class="snp snp-pos "><span>M306</span>/<span>S1</span></span>, <span class="snp  snp-notGenoTested "><span>P231</span></span>, <span class="snp snp-pos "><span>P234</span></span>, <span class="snp  snp-notGenoTested "><span>P294</span></span>&nbsp;<span class='tree-scores'></span></div>
+<div class='tree ' style = 'padding-left: 140px;'><span class='tree-hap '>R1a</span>&nbsp;&nbsp;<span class="snp  "><span>F3650</span></span>, <span class="snp  "><span>F928</span></span>, <span class="snp  "><span>CTS10627</span></span>, <span class="snp  "><span>CTS11734</span></span>, <span class="snp  "><span>CTS2907</span></span>, <span class="snp  "><span>CTS5164</span></span>, <span class="snp  "><span>CTS8008</span></span>, <span class="snp  "><span>CTS8851</span></span>, <span class="snp  "><span>CTS9596</span></span>, <span class="snp  "><span>F1088</span></span>, <span class="snp  "><span>F1769</span></span>, <span class="snp  "><span>F2948</span></span>, <span class="snp  "><span>F3364</span></span>, <span class="snp  "><span>F3466</span></span>, <span class="snp  "><span>F3570</span></span>, <span class="snp  "><span>F886</span></span>, <span class="snp  "><span>L457</span>/<span>PF6191</span></span>, <span class="snp  "><span>PF6215</span></span>, <span class="snp  "><span>M513</span>/<span>L62</span>/<span>PF6200</span></span>, <span class="snp snp-pos "><span>M511</span>/<span>L63</span>/<span>PF6203</span></span>, <span class="snp  "><span>M449</span>/<span>L145</span>/<span>PF6175</span></span>, <span class="snp  "><span>M420</span>/<span>L146</span>/<span>PF6229</span></span>&nbsp;<span class='tree-scores'></span></div>
+<div class='tree ' style = 'padding-left: 150px;'><span class='tree-hap '>R1a1</span>&nbsp;&nbsp;<span class="snp  "><span>CTS11411</span></span>, <span class="snp  "><span>CTS11720</span></span>, <span class="snp  "><span>CTS1619</span></span>, <span class="snp  "><span>CTS3548</span></span>, <span class="snp  "><span>F1050</span></span>, <span class="snp  "><span>F1808</span></span>, <span class="snp  "><span>F2215</span></span>, <span class="snp  "><span>F2234</span></span>, <span class="snp  "><span>F2684</span></span>, <span class="snp  "><span>F2901</span></span>, <span class="snp  "><span>F2957</span></span>, <span class="snp  "><span>F3159</span></span>, <span class="snp  "><span>F3185</span></span>, <span class="snp  "><span>F3194</span></span>, <span class="snp  "><span>F3337</span></span>, <span class="snp  "><span>F3398</span></span>, <span class="snp  "><span>F3551</span></span>, <span class="snp  "><span>F4099</span></span>, <span class="snp  "><span>F947</span></span>, <span class="snp  "><span>F989</span></span>, <span class="snp  "><span>M459</span>/<span>PF6235</span></span>, <span class="snp snp-pos "><span>PAGES00007</span></span>, <span class="snp  "><span>PF6151</span></span>, <span class="snp  "><span>PF6159</span></span>, <span class="snp  "><span>PF6165</span></span>, <span class="snp  "><span>PF6167</span></span>, <span class="snp  "><span>PF6169</span></span>, <span class="snp  "><span>PF6170</span></span>, <span class="snp  "><span>PF6210</span></span>, <span class="snp  "><span>PF6211</span></span>, <span class="snp  "><span>PF6214</span></span>, <span class="snp  "><span>PF6216</span></span>, <span class="snp  "><span>PF6218</span></span>, <span class="snp  "><span>PF7530</span></span>, <span class="snp  "><span>PF7540</span></span>, <span class="snp  "><span>PF7542</span></span>, <span class="snp  "><span>M448</span>/<span>L122</span>/<span>PF6237</span></span>&nbsp;<span class='tree-scores'></span></div><div class='tree pred-subclade' style = 'padding-left: 160px;'><span class='tree-hap '>R1a1a</span>&nbsp;&nbsp;<span class="snp  "><span>L168</span></span>, <span class="snp snp-pos "><span>M17</span></span>, <span class="snp snp-pos "><span>M198</span>/<span>PF6238</span></span>, <span class="snp  "><span>M512</span>/<span>PF6239</span></span>, <span class="snp  snp-notGenoTested "><span>L449</span></span>, <span class="snp snp-pos "><span>M514</span></span>, <span class="snp snp-pos "><span>M515</span></span>&nbsp;<span class='tree-scores'></span></div><div class='tree ' style = 'padding-left: 170px;'><span class='tree-hap '>R1a1a1</span>&nbsp;&nbsp;<span class="snp  "><span>M417</span></span>, <span class="snp  snp-notGenoTested "><span>PAGE7</span></span>&nbsp;<span class='tree-scores'></span></div><div class='tree ' style = 'padding-left: 180px;'><span class='tree-hap '>R1a1a1a</span>&nbsp;&nbsp;<span class="snp  "><span>L664</span>/<span>CTS7083</span>/<span>S298</span></span>&nbsp;<span class='tree-scores'></span></div><div class='tree ' style = 'padding-left: 180px;'><span class='tree-hap '>R1a1a1~1</span>&nbsp;&nbsp;<span class="snp  "><span>CTS5508</span></span>, <span class="snp  "><span>CTS9754</span></span>, <span class="snp  "><span>F3044</span></span>, <span class="snp  "><span>PF6158</span></span>, <span class="snp  "><span>PF6162</span></span>&nbsp;<span class='tree-scores'></span></div>
+</div><div class = 'ascent hidden' id='ascent-1' style='position:relative;'><h4 id = 'ascent-1-top' style='display:inline;'>Examining: M3 [M-P117 (M-P118)]</h4><P>This suggested classification does not account for the following positive SNPs: <BR><textarea rows = 5 cols = 50 spellcheck='false' autocomplete='off'>CLFY16971
+CLFY18665
+CLFY4966
+CTS11948
+CTS12028
+CTS3229
+CTS4557
+CTS5808
+CTS5815
+CTS6327
+CTS8626
+F115
+F1857
+F313
+F556
+F83
+FB1947
+FB988
+FGC12056
+FGC199
+FGC24468
+FGC38
+FGC54
+FGC77
+FN1317
+FN495
+FN591
+FN833
+L1346
+L486
+L63
+L88
+L882
+M1185
+M1188
+M1189
+M1219
+M1226
+M1239
+M1272
+M141
+M17
+M173
+M198
+M207
+M2695
+M288
+M306
+M3639
+M3683
+M3698
+M3707
+M3735
+M3749
+M3771
+M45
+M511
+M514
+M515
+M5705
+M672
+M696
+M74
+M9118
+M9336
+M96
+N12
+P102
+P103
+P222
+P224
+P225
+P226
+P228
+P229
+P230
+P232
+P233
+P234
+P235
+P236
+P237
+P238
+P239
+P240
+P241
+P243
+P244
+P280
+P281
+P282
+P283
+P284
+P295
+P32
+P38
+P80
+PAGES00007
+PAGES00026
+PAGES00029
+PAGES00037
+PAGES00038
+PAGES00081
+PAGES00083
+PF1580
+PF2587
+PF2660
+PF2669
+PF2673
+PF2679
+PF2686
+PF2692
+PF2703
+PF2720
+PF2730
+PF2771
+PF2775
+PF3558
+PF3708
+PF518
+PF5505
+PF5506
+PF5861
+PF5863
+PF5866
+PF5869
+PF5870
+PF5873
+PF5874
+PF5879
+PF5896
+PF5897
+PF5901
+PF5915
+PF5925
+PF5927
+PF5930
+PF5932
+PF5934
+PF5941
+PF5946
+PF5951
+PF5962
+PF5963
+PF5966
+PF5977
+PF5982
+PF6019
+PF6036
+PF6050
+PF6115
+PF6126
+PF6147
+PF6203
+PF6234
+PF6238
+PF6240
+PF6276
+PF:14231292(A|G)
+PF:14432928(A|G)
+PF:14639427(C|A)
+PF:14692227(C|T)
+PF:14958218(C|T)
+PF:14993358(G|A)
+PF:15027529(T|G)
+PF:15086183(C|G)
+PF:16492547(T|C)
+PF:16971648(G|T)
+PF:18026855(A|G)
+PF:18109555(A|C)
+PF:18656508(C|G)
+PF:18865298(T|C)
+PF:18914441(T|C)
+PF:19179540(A|G)
+PF:21409706(C|G)
+PF:21410840(T|G)
+PF:22190371(G|A)
+PF:22739367(C|T)
+PF:23476936(T|G)
+PF:28590278(A|G)
+PF:28733101(G|C)
+PF:2887824(A|C)
+S1
+S118
+S24307
+S26596
+S26597
+S26598
+S27130
+S27150
+S27154
+S27177
+S27244
+S27310
+S27390
+S27470
+S27500
+S27554
+S27700
+U250
+YSC0000222
+YSC0001265
+Z11996
+Z8133
+Z8143
+Z8146</textarea><BR><P><div class='tree ' style = 'padding-left: 0px;'><span class='tree-hap not-geno-tested'>Root (Y-Adam)</span>&nbsp;&nbsp;</div>
+<div class='tree ' style = 'padding-left: 10px;'><span class='tree-hap not-geno-tested'>A0-T</span>&nbsp;&nbsp;<span class="snp  snp-notGenoTested "><span>AF3</span></span>, <span class="snp  snp-notGenoTested "><span>L1085</span></span>, <span class="snp  snp-notGenoTested "><span>L1089</span></span>, <span class="snp  snp-notGenoTested "><span>L1090</span></span>, <span class="snp  snp-notGenoTested "><span>L1093</span></span>, <span class="snp  snp-notGenoTested "><span>L1095</span></span>, <span class="snp  snp-notGenoTested "><span>L1098</span></span>, <span class="snp  snp-notGenoTested "><span>L1099</span></span>, <span class="snp  snp-notGenoTested "><span>L1101</span></span>, <span class="snp  snp-notGenoTested "><span>L1105</span></span>, <span class="snp  snp-notGenoTested "><span>L1116</span></span>, <span class="snp  snp-notGenoTested "><span>L1118</span></span>, <span class="snp  snp-notGenoTested "><span>L1120</span></span>, <span class="snp  snp-notGenoTested "><span>L1121</span></span>, <span class="snp  snp-notGenoTested "><span>L1123</span></span>, <span class="snp  snp-notGenoTested "><span>L1124</span></span>, <span class="snp  snp-notGenoTested "><span>L1125</span></span>, <span class="snp  snp-notGenoTested "><span>L1127</span></span>, <span class="snp  snp-notGenoTested "><span>L1128</span></span>, <span class="snp  snp-notGenoTested "><span>L1129</span></span>, <span class="snp  snp-notGenoTested "><span>L1130</span></span>, <span class="snp  snp-notGenoTested "><span>L1132</span></span>, <span class="snp  snp-notGenoTested "><span>L1135</span></span>, <span class="snp  snp-notGenoTested "><span>L1136</span></span>, <span class="snp  snp-notGenoTested "><span>L1137</span></span>, <span class="snp  snp-notGenoTested "><span>L1142</span></span>, <span class="snp  snp-notGenoTested "><span>L1143</span></span>, <span class="snp  snp-notGenoTested "><span>L1145</span></span>, <span class="snp  snp-notGenoTested "><span>L1150</span></span>, <span class="snp  snp-notGenoTested "><span>L1155</span></span>, <span class="snp  snp-notGenoTested "><span>L1235</span></span></div>
+<div class='tree ' style = 'padding-left: 20px;'><span class='tree-hap '>A1</span>&nbsp;&nbsp;<span class="snp  "><span>CTS3331</span></span>, <span class="snp  "><span>P305</span></span>, <span class="snp  "><span>V168</span></span>, <span class="snp  "><span>V171</span></span>, <span class="snp  "><span>V174</span></span>, <span class="snp  "><span>V238</span></span>, <span class="snp  "><span>V241</span></span>, <span class="snp  "><span>V250</span></span>, <span class="snp  snp-notGenoTested "><span>L985</span></span>, <span class="snp  snp-notGenoTested "><span>L986</span></span>, <span class="snp  snp-notGenoTested "><span>L989</span></span>, <span class="snp  snp-notGenoTested "><span>L1002</span></span>, <span class="snp  snp-notGenoTested "><span>L1003</span></span>, <span class="snp  snp-notGenoTested "><span>L1004</span></span>, <span class="snp  snp-notGenoTested "><span>L1005</span></span>, <span class="snp  snp-notGenoTested "><span>L1009</span></span>, <span class="snp  snp-notGenoTested "><span>L1013</span></span>, <span class="snp  snp-notGenoTested "><span>L1053</span></span>, <span class="snp  snp-notGenoTested "><span>L1084</span></span>, <span class="snp  snp-notGenoTested "><span>L1112</span></span>, <span class="snp  snp-notGenoTested "><span>L1153</span></span>, <span class="snp  snp-notGenoTested "><span>V161</span><sup>R</sup></span>&nbsp;<span class='tree-scores'></span></div>
+<div class='tree ' style = 'padding-left: 30px;'><span class='tree-hap '>A1b</span>&nbsp;&nbsp;<span class="snp  "><span>P108</span></span>, <span class="snp  "><span>V221</span></span>&nbsp;<span class='tree-scores'></span></div>
+<div class='tree ' style = 'padding-left: 40px;'><span class='tree-hap '>BT</span>&nbsp;&nbsp;<span class="snp  "><span>M139</span></span>, <span class="snp snp-pos "><span>M42</span></span>, <span class="snp snp-pos "><span>M94</span>/<span>PF1081</span></span>, <span class="snp  "><span>L440</span></span>, <span class="snp  "><span>L1061</span>/<span>PF1101</span></span>, <span class="snp  "><span>L1062</span>/<span>PF302</span></span>, <span class="snp snp-pos "><span>PK1</span></span>, <span class="snp  "><span>PF1407</span>/<span>V29</span></span>, <span class="snp  "><span>PF1411</span>/<span>V59</span></span>, <span class="snp  "><span>PF1412</span>/<span>V64</span></span>, <span class="snp  "><span>PF1406</span>/<span>V102</span></span>, <span class="snp  "><span>V187</span></span>, <span class="snp  snp-notGenoTested "><span>L413</span>/<span>PF1409</span>/<span>V31</span></span>, <span class="snp  snp-notGenoTested "><span>L418</span></span>, <span class="snp  snp-notGenoTested "><span>L438</span></span>, <span class="snp  snp-notGenoTested "><span>L604</span>/<span>PF1243</span></span>, <span class="snp  snp-notGenoTested "><span>L957</span></span>, <span class="snp  snp-notGenoTested "><span>L962</span></span>, <span class="snp  snp-notGenoTested "><span>L969</span></span>, <span class="snp  snp-notGenoTested "><span>L970</span>/<span>PF1065</span></span>, <span class="snp  snp-notGenoTested "><span>L971</span></span>, <span class="snp  snp-notGenoTested "><span>L977</span></span>, <span class="snp  snp-notGenoTested "><span>L1060</span>/<span>PF1021</span></span>, <span class="snp  snp-notGenoTested "><span>M91</span></span>, <span class="snp snp-pos "><span>M299</span></span>, <span class="snp  snp-notGenoTested "><span>P97</span></span>, <span class="snp snp-neg "><span>PAGE65</span>/<span>SRY1532</span>/<span>SRY10831</span><sup>R</sup></span>, <span class="snp  snp-notGenoTested "><span>V202</span></span>, <span class="snp  snp-notGenoTested "><span>PF1410</span>/<span>V235</span></span>&nbsp;<span class='tree-scores'></span></div>
+<div class='tree ' style = 'padding-left: 50px;'><span class='tree-hap '>CT</span>&nbsp;&nbsp;<span class="snp  "><span>PF1269</span></span>, <span class="snp  "><span>PF258</span></span>, <span class="snp  "><span>CTS125</span></span>, <span class="snp  "><span>CTS5318</span></span>, <span class="snp  "><span>PF954</span></span>, <span class="snp snp-pos "><span>M294</span></span>, <span class="snp  "><span>PF779</span></span>, <span class="snp  "><span>PF110</span></span>, <span class="snp  "><span>PF821</span></span>, <span class="snp  "><span>PF1276</span></span>, <span class="snp  "><span>V189</span></span>, <span class="snp  "><span>PF192</span></span>, <span class="snp  "><span>CTS10362</span></span>, <span class="snp  "><span>CTS109</span></span>, <span class="snp  "><span>CTS11358</span></span>, <span class="snp  "><span>CTS11575</span></span>, <span class="snp  "><span>CTS1996</span></span>, <span class="snp  "><span>CTS3431</span></span>, <span class="snp  "><span>CTS3662</span></span>, <span class="snp  "><span>CTS4364</span></span>, <span class="snp  "><span>CTS4368</span></span>, <span class="snp  "><span>CTS4740</span></span>, <span class="snp  "><span>CTS5457</span></span>, <span class="snp  "><span>CTS5532</span></span>, <span class="snp  "><span>CTS6383</span></span>, <span class="snp  "><span>CTS6800</span></span>, <span class="snp  "><span>CTS6907</span></span>, <span class="snp  "><span>CTS7922</span></span>, <span class="snp  "><span>CTS7933</span></span>, <span class="snp  "><span>CTS8243</span></span>, <span class="snp  "><span>CTS8980</span></span>, <span class="snp  "><span>CTS9828</span></span>, <span class="snp snp-pos "><span>M168</span>/<span>PF1416</span></span>, <span class="snp  "><span>PF1016</span></span>, <span class="snp  "><span>PF1029</span></span>, <span class="snp  "><span>PF1031</span></span>, <span class="snp  "><span>PF1040</span></span>, <span class="snp  "><span>PF1046</span></span>, <span class="snp  "><span>PF1061</span></span>, <span class="snp  "><span>PF1092</span></span>, <span class="snp  "><span>PF1097</span></span>, <span class="snp  "><span>PF1203</span></span>, <span class="snp  "><span>PF210</span></span>, <span class="snp  "><span>PF212</span></span>, <span class="snp  "><span>PF223</span></span>, <span class="snp  "><span>PF234</span></span>, <span class="snp  "><span>PF263</span></span>, <span class="snp  "><span>PF272</span></span>, <span class="snp  "><span>PF278</span></span>, <span class="snp  "><span>PF292</span></span>, <span class="snp  "><span>PF316</span></span>, <span class="snp  "><span>PF325</span></span>, <span class="snp  "><span>PF342</span></span>, <span class="snp  "><span>PF500</span></span>, <span class="snp  "><span>PF667</span></span>, <span class="snp  "><span>PF719</span></span>, <span class="snp  "><span>PF725</span></span>, <span class="snp  "><span>PF796</span></span>, <span class="snp  "><span>PF803</span></span>, <span class="snp  "><span>PF815</span></span>, <span class="snp  "><span>PF840</span></span>, <span class="snp  "><span>PF844</span></span>, <span class="snp  "><span>PF892</span></span>, <span class="snp  "><span>PF937</span></span>, <span class="snp  "><span>PF951</span></span>, <span class="snp  "><span>PF970</span></span>, <span class="snp  "><span>V52</span></span>, <span class="snp  "><span>V9</span></span>, <span class="snp  snp-notGenoTested "><span>P9</span><sup>R</sup></span>&nbsp;<span class='tree-scores'></span></div>
+<div class='tree ' style = 'padding-left: 60px;'><span class='tree-hap not-geno-tested'>CF</span>&nbsp;&nbsp;<span class="snp snp-pos "><span>P143</span></span></div>
+<div class='tree ' style = 'padding-left: 70px;'><span class='tree-hap '>F</span>&nbsp;&nbsp;<span class="snp  "><span>F2048</span></span>, <span class="snp snp-pos "><span>PF2745</span></span>, <span class="snp  "><span>F2075</span></span>, <span class="snp  "><span>PF2631</span></span>, <span class="snp  "><span>F1320</span></span>, <span class="snp  "><span>F2142</span></span>, <span class="snp  "><span>F1302</span></span>, <span class="snp  "><span>F3111</span></span>, <span class="snp  "><span>F2710</span></span>, <span class="snp  "><span>F2985</span></span>, <span class="snp  "><span>L498</span></span>, <span class="snp  "><span>PF2599</span></span>, <span class="snp  "><span>CTS11726</span></span>, <span class="snp snp-pos "><span>CTS12632</span></span>, <span class="snp  "><span>CTS3536</span></span>, <span class="snp  "><span>CTS3654</span></span>, <span class="snp snp-neg "><span>CTS3868</span></span>, <span class="snp  "><span>CTS3996</span></span>, <span class="snp  "><span>CTS4443</span></span>, <span class="snp  "><span>CTS6135</span></span>, <span class="snp  "><span>F1046</span></span>, <span class="snp  "><span>F1209</span></span>, <span class="snp  "><span>F1329</span></span>, <span class="snp  "><span>F1704</span></span>, <span class="snp  "><span>F1714</span></span>, <span class="snp  "><span>F1753</span></span>, <span class="snp snp-pos "><span>F1767</span></span>, <span class="snp  "><span>F2155</span></span>, <span class="snp  "><span>F2402</span></span>, <span class="snp  "><span>F2587</span></span>, <span class="snp  "><span>F2688</span></span>, <span class="snp  "><span>F2837</span></span>, <span class="snp  "><span>F2993</span></span>, <span class="snp  "><span>F3136</span></span>, <span class="snp  "><span>F3335</span></span>, <span class="snp  "><span>F3556</span></span>, <span class="snp  "><span>F3692</span></span>, <span class="snp  "><span>F719</span></span>, <span class="snp snp-pos "><span>L350</span></span>, <span class="snp  "><span>L468</span></span>, <span class="snp snp-pos "><span>L470</span></span>, <span class="snp snp-pos "><span>PF2591</span></span>, <span class="snp  "><span>PF2593</span></span>, <span class="snp  "><span>PF2600</span></span>, <span class="snp  "><span>PF2608</span></span>, <span class="snp  "><span>PF2611</span></span>, <span class="snp  "><span>PF2615</span></span>, <span class="snp  "><span>PF2624</span></span>, <span class="snp  "><span>PF2643</span></span>, <span class="snp  "><span>PF2747</span></span>, <span class="snp  "><span>PF2748</span></span>, <span class="snp  "><span>PF2749</span></span>, <span class="snp  "><span>PF2770</span></span>, <span class="snp  "><span>V186</span></span>, <span class="snp  "><span>V205</span></span>, <span class="snp  "><span>L132</span><sup>R</sup></span>, <span class="snp snp-pos "><span>M89</span>/<span>PF2746</span></span>, <span class="snp  "><span>M235</span>/<span>PAGE80</span>/<span>PF2665</span></span>, <span class="snp snp-pos "><span>PF2704</span>/<span>P14</span></span>, <span class="snp snp-pos "><span>PF2741</span>/<span>P135</span></span>, <span class="snp snp-pos "><span>PF2762</span>/<span>P136</span></span>, <span class="snp snp-pos "><span>PF2655</span>/<span>P138</span></span>, <span class="snp snp-pos "><span>PF2602</span>/<span>P141</span></span>, <span class="snp snp-pos "><span>PF2617</span>/<span>P145</span></span>, <span class="snp  "><span>PF2623</span>/<span>P146</span></span>, <span class="snp snp-pos "><span>PF2734</span>/<span>P148</span></span>, <span class="snp snp-pos "><span>PF2625</span>/<span>P151</span></span>, <span class="snp  "><span>PF2706</span>/<span>P158</span></span>, <span class="snp snp-pos "><span>PF2717</span>/<span>P159</span></span>, <span class="snp snp-pos "><span>PF2618</span>/<span>P160</span></span>, <span class="snp snp-pos "><span>PF2702</span>/<span>P166</span></span>, <span class="snp  "><span>PF2632</span>/<span>P187</span></span>, <span class="snp snp-pos "><span>M213</span>/<span>P137</span>/<span>PAGE38</span></span>, <span class="snp  snp-notGenoTested "><span>P133</span></span>, <span class="snp  snp-notGenoTested "><span>P134</span></span>, <span class="snp  snp-notGenoTested "><span>P139</span></span>, <span class="snp snp-pos "><span>P140</span></span>, <span class="snp  snp-notGenoTested "><span>P142</span></span>, <span class="snp snp-pos "><span>P149</span></span>, <span class="snp snp-pos "><span>P157</span></span>, <span class="snp  snp-notGenoTested "><span>P161</span></span>, <span class="snp snp-pos "><span>P163</span></span>, <span class="snp  snp-notGenoTested "><span>P316</span></span>&nbsp;<span class='tree-scores'></span></div>
+<div class='tree ' style = 'padding-left: 80px;'><span class='tree-hap '>IJK</span>&nbsp;&nbsp;<span class="snp  "><span>M523</span>/<span>L15</span>/<span>PF3492</span>/<span>S137</span></span>, <span class="snp  "><span>M522</span>/<span>L16</span>/<span>PF3493</span>/<span>S138</span></span>&nbsp;<span class='tree-scores'></span></div>
+<div class='tree pred-subclade' style = 'padding-left: 90px;'><span class='tree-hap '>K</span>&nbsp;&nbsp;<span class="snp snp-pos "><span>PF5504</span>/<span>P128</span></span>, <span class="snp snp-pos "><span>PF5493</span>/<span>P131</span></span>, <span class="snp snp-pos "><span>PF5480</span>/<span>P132</span></span>, <span class="snp snp-pos "><span>M9</span></span>&nbsp;<span class='tree-scores'></span></div>
+<div class='tree ' style = 'padding-left: 100px;'><span class='tree-hap '>K(xLT)</span>&nbsp;&nbsp;<span class="snp  "><span>M526</span>/<span>PF5979</span></span>&nbsp;<span class='tree-scores'></span></div>
+<div class='tree ' style = 'padding-left: 110px;'><span class='tree-hap '>M</span>&nbsp;&nbsp;<span class="snp snp-neg "><span>P256</span></span>, <span class="snp snp-neg "><span>PAGE93</span>/<span>S322</span></span>&nbsp;<span class='tree-scores'></span></div><div class='tree ' style = 'padding-left: 120px;'><span class='tree-hap '>M1</span>&nbsp;&nbsp;<span class="snp  "><span>M4</span></span>, <span class="snp snp-neg "><span>M5</span>/<span>P73</span></span>, <span class="snp snp-neg "><span>M106</span></span>, <span class="snp  "><span>M186</span></span>, <span class="snp snp-neg "><span>M189</span></span>, <span class="snp snp-neg "><span>M296</span></span>, <span class="snp  snp-notGenoTested "><span>P35</span><sup>R</sup></span>, <span class="snp  snp-notGenoTested "><span>PAGE1</span></span>&nbsp;<span class='tree-scores'></span></div><div class='tree ' style = 'padding-left: 130px;'><span class='tree-hap not-geno-tested'>M1a</span>&nbsp;&nbsp;<span class="snp  snp-notGenoTested "><span>P34</span><sup>R</sup></span></div><div class='tree ' style = 'padding-left: 140px;'><span class='tree-hap '>M1a1</span>&nbsp;&nbsp;<span class="snp snp-neg "><span>P51</span></span>&nbsp;<span class='tree-scores'></span></div><div class='tree ' style = 'padding-left: 140px;'><span class='tree-hap '>M1a2</span>&nbsp;&nbsp;<span class="snp  "><span>P94</span></span>&nbsp;<span class='tree-scores'></span></div><div class='tree ' style = 'padding-left: 130px;'><span class='tree-hap '>M1b</span>&nbsp;&nbsp;<span class="snp snp-neg "><span>P87</span></span>&nbsp;<span class='tree-scores'></span></div><div class='tree ' style = 'padding-left: 140px;'><span class='tree-hap not-geno-tested'>M1b1</span>&nbsp;&nbsp;<span class="snp  snp-notGenoTested "><span>M104</span>/<span>P22</span><sup>R</sup></span>, <span class="snp  snp-notGenoTested "><span>PAGE67</span></span></div><div class='tree ' style = 'padding-left: 120px;'><span class='tree-hap '>M2</span>&nbsp;&nbsp;<span class="snp snp-neg "><span>M353</span></span>, <span class="snp snp-neg "><span>M387</span></span>&nbsp;<span class='tree-scores'></span></div><div class='tree ' style = 'padding-left: 130px;'><span class='tree-hap '>M2a</span>&nbsp;&nbsp;<span class="snp snp-neg "><span>M177</span>/<span>SRY9138</span></span>&nbsp;<span class='tree-scores'></span></div><div class='tree pred-subclade' style = 'padding-left: 120px;'><span class='tree-hap '>M3</span>&nbsp;&nbsp;<span class="snp snp-pos "><span>P117</span></span>, <span class="snp  "><span>P118</span></span>&nbsp;<span class='tree-scores'></span></div>
+</div><div class = 'ascent hidden' id='ascent-2' style='position:relative;'><h4 id = 'ascent-2-top' style='display:inline;'>Examining: K [K-PF5504 (K-PF5493, K-PF5480)]</h4><P>This suggested classification does not account for the following positive SNPs: <BR><textarea rows = 5 cols = 50 spellcheck='false' autocomplete='off'>CLFY16971
+CLFY18665
+CLFY4966
+CTS11948
+CTS12028
+CTS3229
+CTS4557
+CTS5808
+CTS5815
+CTS6327
+CTS8626
+F115
+F1857
+F313
+F556
+F83
+FB1947
+FB988
+FGC12056
+FGC199
+FGC24468
+FGC38
+FGC54
+FGC77
+FN1317
+FN495
+FN591
+FN833
+L1346
+L486
+L63
+L88
+L882
+M1185
+M1188
+M1189
+M1219
+M1226
+M1239
+M1272
+M141
+M17
+M173
+M198
+M207
+M2695
+M288
+M306
+M3639
+M3683
+M3698
+M3707
+M3735
+M3749
+M3771
+M45
+M511
+M514
+M515
+M5705
+M672
+M696
+M74
+M9118
+M9336
+M96
+N12
+P102
+P103
+P117
+P222
+P224
+P225
+P226
+P228
+P229
+P230
+P232
+P233
+P234
+P235
+P236
+P237
+P238
+P239
+P240
+P241
+P243
+P244
+P280
+P281
+P282
+P283
+P284
+P295
+P32
+P38
+P80
+PAGES00007
+PAGES00026
+PAGES00029
+PAGES00037
+PAGES00038
+PAGES00081
+PAGES00083
+PF1580
+PF2587
+PF2660
+PF2669
+PF2673
+PF2679
+PF2686
+PF2692
+PF2703
+PF2720
+PF2730
+PF2771
+PF2775
+PF3558
+PF3708
+PF518
+PF5505
+PF5506
+PF5861
+PF5863
+PF5866
+PF5869
+PF5870
+PF5873
+PF5874
+PF5879
+PF5896
+PF5897
+PF5901
+PF5915
+PF5925
+PF5927
+PF5930
+PF5932
+PF5934
+PF5941
+PF5946
+PF5951
+PF5962
+PF5963
+PF5966
+PF5977
+PF5982
+PF6019
+PF6036
+PF6050
+PF6115
+PF6126
+PF6147
+PF6203
+PF6234
+PF6238
+PF6240
+PF6276
+PF:14231292(A|G)
+PF:14432928(A|G)
+PF:14639427(C|A)
+PF:14692227(C|T)
+PF:14958218(C|T)
+PF:14993358(G|A)
+PF:15027529(T|G)
+PF:15086183(C|G)
+PF:16492547(T|C)
+PF:16971648(G|T)
+PF:18026855(A|G)
+PF:18109555(A|C)
+PF:18656508(C|G)
+PF:18865298(T|C)
+PF:18914441(T|C)
+PF:19179540(A|G)
+PF:21409706(C|G)
+PF:21410840(T|G)
+PF:22190371(G|A)
+PF:22739367(C|T)
+PF:23476936(T|G)
+PF:28590278(A|G)
+PF:28733101(G|C)
+PF:2887824(A|C)
+S1
+S118
+S24307
+S26596
+S26597
+S26598
+S27130
+S27150
+S27154
+S27177
+S27244
+S27310
+S27390
+S27470
+S27500
+S27554
+S27700
+U250
+YSC0000222
+YSC0001265
+Z11996
+Z8133
+Z8143
+Z8146</textarea><BR><P><div class='tree ' style = 'padding-left: 0px;'><span class='tree-hap not-geno-tested'>Root (Y-Adam)</span>&nbsp;&nbsp;</div>
+<div class='tree ' style = 'padding-left: 10px;'><span class='tree-hap not-geno-tested'>A0-T</span>&nbsp;&nbsp;<span class="snp  snp-notGenoTested "><span>AF3</span></span>, <span class="snp  snp-notGenoTested "><span>L1085</span></span>, <span class="snp  snp-notGenoTested "><span>L1089</span></span>, <span class="snp  snp-notGenoTested "><span>L1090</span></span>, <span class="snp  snp-notGenoTested "><span>L1093</span></span>, <span class="snp  snp-notGenoTested "><span>L1095</span></span>, <span class="snp  snp-notGenoTested "><span>L1098</span></span>, <span class="snp  snp-notGenoTested "><span>L1099</span></span>, <span class="snp  snp-notGenoTested "><span>L1101</span></span>, <span class="snp  snp-notGenoTested "><span>L1105</span></span>, <span class="snp  snp-notGenoTested "><span>L1116</span></span>, <span class="snp  snp-notGenoTested "><span>L1118</span></span>, <span class="snp  snp-notGenoTested "><span>L1120</span></span>, <span class="snp  snp-notGenoTested "><span>L1121</span></span>, <span class="snp  snp-notGenoTested "><span>L1123</span></span>, <span class="snp  snp-notGenoTested "><span>L1124</span></span>, <span class="snp  snp-notGenoTested "><span>L1125</span></span>, <span class="snp  snp-notGenoTested "><span>L1127</span></span>, <span class="snp  snp-notGenoTested "><span>L1128</span></span>, <span class="snp  snp-notGenoTested "><span>L1129</span></span>, <span class="snp  snp-notGenoTested "><span>L1130</span></span>, <span class="snp  snp-notGenoTested "><span>L1132</span></span>, <span class="snp  snp-notGenoTested "><span>L1135</span></span>, <span class="snp  snp-notGenoTested "><span>L1136</span></span>, <span class="snp  snp-notGenoTested "><span>L1137</span></span>, <span class="snp  snp-notGenoTested "><span>L1142</span></span>, <span class="snp  snp-notGenoTested "><span>L1143</span></span>, <span class="snp  snp-notGenoTested "><span>L1145</span></span>, <span class="snp  snp-notGenoTested "><span>L1150</span></span>, <span class="snp  snp-notGenoTested "><span>L1155</span></span>, <span class="snp  snp-notGenoTested "><span>L1235</span></span></div>
+<div class='tree ' style = 'padding-left: 20px;'><span class='tree-hap '>A1</span>&nbsp;&nbsp;<span class="snp  "><span>CTS3331</span></span>, <span class="snp  "><span>P305</span></span>, <span class="snp  "><span>V168</span></span>, <span class="snp  "><span>V171</span></span>, <span class="snp  "><span>V174</span></span>, <span class="snp  "><span>V238</span></span>, <span class="snp  "><span>V241</span></span>, <span class="snp  "><span>V250</span></span>, <span class="snp  snp-notGenoTested "><span>L985</span></span>, <span class="snp  snp-notGenoTested "><span>L986</span></span>, <span class="snp  snp-notGenoTested "><span>L989</span></span>, <span class="snp  snp-notGenoTested "><span>L1002</span></span>, <span class="snp  snp-notGenoTested "><span>L1003</span></span>, <span class="snp  snp-notGenoTested "><span>L1004</span></span>, <span class="snp  snp-notGenoTested "><span>L1005</span></span>, <span class="snp  snp-notGenoTested "><span>L1009</span></span>, <span class="snp  snp-notGenoTested "><span>L1013</span></span>, <span class="snp  snp-notGenoTested "><span>L1053</span></span>, <span class="snp  snp-notGenoTested "><span>L1084</span></span>, <span class="snp  snp-notGenoTested "><span>L1112</span></span>, <span class="snp  snp-notGenoTested "><span>L1153</span></span>, <span class="snp  snp-notGenoTested "><span>V161</span><sup>R</sup></span>&nbsp;<span class='tree-scores'></span></div>
+<div class='tree ' style = 'padding-left: 30px;'><span class='tree-hap '>A1b</span>&nbsp;&nbsp;<span class="snp  "><span>P108</span></span>, <span class="snp  "><span>V221</span></span>&nbsp;<span class='tree-scores'></span></div>
+<div class='tree ' style = 'padding-left: 40px;'><span class='tree-hap '>BT</span>&nbsp;&nbsp;<span class="snp  "><span>M139</span></span>, <span class="snp snp-pos "><span>M42</span></span>, <span class="snp snp-pos "><span>M94</span>/<span>PF1081</span></span>, <span class="snp  "><span>L440</span></span>, <span class="snp  "><span>L1061</span>/<span>PF1101</span></span>, <span class="snp  "><span>L1062</span>/<span>PF302</span></span>, <span class="snp snp-pos "><span>PK1</span></span>, <span class="snp  "><span>PF1407</span>/<span>V29</span></span>, <span class="snp  "><span>PF1411</span>/<span>V59</span></span>, <span class="snp  "><span>PF1412</span>/<span>V64</span></span>, <span class="snp  "><span>PF1406</span>/<span>V102</span></span>, <span class="snp  "><span>V187</span></span>, <span class="snp  snp-notGenoTested "><span>L413</span>/<span>PF1409</span>/<span>V31</span></span>, <span class="snp  snp-notGenoTested "><span>L418</span></span>, <span class="snp  snp-notGenoTested "><span>L438</span></span>, <span class="snp  snp-notGenoTested "><span>L604</span>/<span>PF1243</span></span>, <span class="snp  snp-notGenoTested "><span>L957</span></span>, <span class="snp  snp-notGenoTested "><span>L962</span></span>, <span class="snp  snp-notGenoTested "><span>L969</span></span>, <span class="snp  snp-notGenoTested "><span>L970</span>/<span>PF1065</span></span>, <span class="snp  snp-notGenoTested "><span>L971</span></span>, <span class="snp  snp-notGenoTested "><span>L977</span></span>, <span class="snp  snp-notGenoTested "><span>L1060</span>/<span>PF1021</span></span>, <span class="snp  snp-notGenoTested "><span>M91</span></span>, <span class="snp snp-pos "><span>M299</span></span>, <span class="snp  snp-notGenoTested "><span>P97</span></span>, <span class="snp snp-neg "><span>PAGE65</span>/<span>SRY1532</span>/<span>SRY10831</span><sup>R</sup></span>, <span class="snp  snp-notGenoTested "><span>V202</span></span>, <span class="snp  snp-notGenoTested "><span>PF1410</span>/<span>V235</span></span>&nbsp;<span class='tree-scores'></span></div>
+<div class='tree ' style = 'padding-left: 50px;'><span class='tree-hap '>CT</span>&nbsp;&nbsp;<span class="snp  "><span>PF1269</span></span>, <span class="snp  "><span>PF258</span></span>, <span class="snp  "><span>CTS125</span></span>, <span class="snp  "><span>CTS5318</span></span>, <span class="snp  "><span>PF954</span></span>, <span class="snp snp-pos "><span>M294</span></span>, <span class="snp  "><span>PF779</span></span>, <span class="snp  "><span>PF110</span></span>, <span class="snp  "><span>PF821</span></span>, <span class="snp  "><span>PF1276</span></span>, <span class="snp  "><span>V189</span></span>, <span class="snp  "><span>PF192</span></span>, <span class="snp  "><span>CTS10362</span></span>, <span class="snp  "><span>CTS109</span></span>, <span class="snp  "><span>CTS11358</span></span>, <span class="snp  "><span>CTS11575</span></span>, <span class="snp  "><span>CTS1996</span></span>, <span class="snp  "><span>CTS3431</span></span>, <span class="snp  "><span>CTS3662</span></span>, <span class="snp  "><span>CTS4364</span></span>, <span class="snp  "><span>CTS4368</span></span>, <span class="snp  "><span>CTS4740</span></span>, <span class="snp  "><span>CTS5457</span></span>, <span class="snp  "><span>CTS5532</span></span>, <span class="snp  "><span>CTS6383</span></span>, <span class="snp  "><span>CTS6800</span></span>, <span class="snp  "><span>CTS6907</span></span>, <span class="snp  "><span>CTS7922</span></span>, <span class="snp  "><span>CTS7933</span></span>, <span class="snp  "><span>CTS8243</span></span>, <span class="snp  "><span>CTS8980</span></span>, <span class="snp  "><span>CTS9828</span></span>, <span class="snp snp-pos "><span>M168</span>/<span>PF1416</span></span>, <span class="snp  "><span>PF1016</span></span>, <span class="snp  "><span>PF1029</span></span>, <span class="snp  "><span>PF1031</span></span>, <span class="snp  "><span>PF1040</span></span>, <span class="snp  "><span>PF1046</span></span>, <span class="snp  "><span>PF1061</span></span>, <span class="snp  "><span>PF1092</span></span>, <span class="snp  "><span>PF1097</span></span>, <span class="snp  "><span>PF1203</span></span>, <span class="snp  "><span>PF210</span></span>, <span class="snp  "><span>PF212</span></span>, <span class="snp  "><span>PF223</span></span>, <span class="snp  "><span>PF234</span></span>, <span class="snp  "><span>PF263</span></span>, <span class="snp  "><span>PF272</span></span>, <span class="snp  "><span>PF278</span></span>, <span class="snp  "><span>PF292</span></span>, <span class="snp  "><span>PF316</span></span>, <span class="snp  "><span>PF325</span></span>, <span class="snp  "><span>PF342</span></span>, <span class="snp  "><span>PF500</span></span>, <span class="snp  "><span>PF667</span></span>, <span class="snp  "><span>PF719</span></span>, <span class="snp  "><span>PF725</span></span>, <span class="snp  "><span>PF796</span></span>, <span class="snp  "><span>PF803</span></span>, <span class="snp  "><span>PF815</span></span>, <span class="snp  "><span>PF840</span></span>, <span class="snp  "><span>PF844</span></span>, <span class="snp  "><span>PF892</span></span>, <span class="snp  "><span>PF937</span></span>, <span class="snp  "><span>PF951</span></span>, <span class="snp  "><span>PF970</span></span>, <span class="snp  "><span>V52</span></span>, <span class="snp  "><span>V9</span></span>, <span class="snp  snp-notGenoTested "><span>P9</span><sup>R</sup></span>&nbsp;<span class='tree-scores'></span></div>
+<div class='tree ' style = 'padding-left: 60px;'><span class='tree-hap not-geno-tested'>CF</span>&nbsp;&nbsp;<span class="snp snp-pos "><span>P143</span></span></div>
+<div class='tree ' style = 'padding-left: 70px;'><span class='tree-hap '>F</span>&nbsp;&nbsp;<span class="snp  "><span>F2048</span></span>, <span class="snp snp-pos "><span>PF2745</span></span>, <span class="snp  "><span>F2075</span></span>, <span class="snp  "><span>PF2631</span></span>, <span class="snp  "><span>F1320</span></span>, <span class="snp  "><span>F2142</span></span>, <span class="snp  "><span>F1302</span></span>, <span class="snp  "><span>F3111</span></span>, <span class="snp  "><span>F2710</span></span>, <span class="snp  "><span>F2985</span></span>, <span class="snp  "><span>L498</span></span>, <span class="snp  "><span>PF2599</span></span>, <span class="snp  "><span>CTS11726</span></span>, <span class="snp snp-pos "><span>CTS12632</span></span>, <span class="snp  "><span>CTS3536</span></span>, <span class="snp  "><span>CTS3654</span></span>, <span class="snp snp-neg "><span>CTS3868</span></span>, <span class="snp  "><span>CTS3996</span></span>, <span class="snp  "><span>CTS4443</span></span>, <span class="snp  "><span>CTS6135</span></span>, <span class="snp  "><span>F1046</span></span>, <span class="snp  "><span>F1209</span></span>, <span class="snp  "><span>F1329</span></span>, <span class="snp  "><span>F1704</span></span>, <span class="snp  "><span>F1714</span></span>, <span class="snp  "><span>F1753</span></span>, <span class="snp snp-pos "><span>F1767</span></span>, <span class="snp  "><span>F2155</span></span>, <span class="snp  "><span>F2402</span></span>, <span class="snp  "><span>F2587</span></span>, <span class="snp  "><span>F2688</span></span>, <span class="snp  "><span>F2837</span></span>, <span class="snp  "><span>F2993</span></span>, <span class="snp  "><span>F3136</span></span>, <span class="snp  "><span>F3335</span></span>, <span class="snp  "><span>F3556</span></span>, <span class="snp  "><span>F3692</span></span>, <span class="snp  "><span>F719</span></span>, <span class="snp snp-pos "><span>L350</span></span>, <span class="snp  "><span>L468</span></span>, <span class="snp snp-pos "><span>L470</span></span>, <span class="snp snp-pos "><span>PF2591</span></span>, <span class="snp  "><span>PF2593</span></span>, <span class="snp  "><span>PF2600</span></span>, <span class="snp  "><span>PF2608</span></span>, <span class="snp  "><span>PF2611</span></span>, <span class="snp  "><span>PF2615</span></span>, <span class="snp  "><span>PF2624</span></span>, <span class="snp  "><span>PF2643</span></span>, <span class="snp  "><span>PF2747</span></span>, <span class="snp  "><span>PF2748</span></span>, <span class="snp  "><span>PF2749</span></span>, <span class="snp  "><span>PF2770</span></span>, <span class="snp  "><span>V186</span></span>, <span class="snp  "><span>V205</span></span>, <span class="snp  "><span>L132</span><sup>R</sup></span>, <span class="snp snp-pos "><span>M89</span>/<span>PF2746</span></span>, <span class="snp  "><span>M235</span>/<span>PAGE80</span>/<span>PF2665</span></span>, <span class="snp snp-pos "><span>PF2704</span>/<span>P14</span></span>, <span class="snp snp-pos "><span>PF2741</span>/<span>P135</span></span>, <span class="snp snp-pos "><span>PF2762</span>/<span>P136</span></span>, <span class="snp snp-pos "><span>PF2655</span>/<span>P138</span></span>, <span class="snp snp-pos "><span>PF2602</span>/<span>P141</span></span>, <span class="snp snp-pos "><span>PF2617</span>/<span>P145</span></span>, <span class="snp  "><span>PF2623</span>/<span>P146</span></span>, <span class="snp snp-pos "><span>PF2734</span>/<span>P148</span></span>, <span class="snp snp-pos "><span>PF2625</span>/<span>P151</span></span>, <span class="snp  "><span>PF2706</span>/<span>P158</span></span>, <span class="snp snp-pos "><span>PF2717</span>/<span>P159</span></span>, <span class="snp snp-pos "><span>PF2618</span>/<span>P160</span></span>, <span class="snp snp-pos "><span>PF2702</span>/<span>P166</span></span>, <span class="snp  "><span>PF2632</span>/<span>P187</span></span>, <span class="snp snp-pos "><span>M213</span>/<span>P137</span>/<span>PAGE38</span></span>, <span class="snp  snp-notGenoTested "><span>P133</span></span>, <span class="snp  snp-notGenoTested "><span>P134</span></span>, <span class="snp  snp-notGenoTested "><span>P139</span></span>, <span class="snp snp-pos "><span>P140</span></span>, <span class="snp  snp-notGenoTested "><span>P142</span></span>, <span class="snp snp-pos "><span>P149</span></span>, <span class="snp snp-pos "><span>P157</span></span>, <span class="snp  snp-notGenoTested "><span>P161</span></span>, <span class="snp snp-pos "><span>P163</span></span>, <span class="snp  snp-notGenoTested "><span>P316</span></span>&nbsp;<span class='tree-scores'></span></div>
+<div class='tree ' style = 'padding-left: 80px;'><span class='tree-hap '>IJK</span>&nbsp;&nbsp;<span class="snp  "><span>M523</span>/<span>L15</span>/<span>PF3492</span>/<span>S137</span></span>, <span class="snp  "><span>M522</span>/<span>L16</span>/<span>PF3493</span>/<span>S138</span></span>&nbsp;<span class='tree-scores'></span></div><div class='tree ' style = 'padding-left: 90px;'><span class='tree-hap '>IJ</span>&nbsp;&nbsp;<span class="snp  "><span>L748</span></span>, <span class="snp  "><span>CTS6932</span></span>, <span class="snp  "><span>CTS9240</span></span>, <span class="snp  "><span>F1450</span></span>, <span class="snp  "><span>F1460</span></span>, <span class="snp  "><span>F2345</span></span>, <span class="snp  "><span>F2366</span></span>, <span class="snp  "><span>F2794</span></span>, <span class="snp  "><span>F3368</span></span>, <span class="snp  "><span>F3402</span></span>, <span class="snp  "><span>F4188</span></span>, <span class="snp  "><span>F922</span></span>, <span class="snp  "><span>L403</span></span>, <span class="snp  "><span>PF3504</span></span>, <span class="snp  "><span>PF3514</span></span>, <span class="snp  "><span>PF3515</span></span>, <span class="snp  "><span>PF3517</span></span>, <span class="snp  "><span>PF3518</span></span>, <span class="snp  "><span>PF3534</span></span>, <span class="snp  "><span>PF3560</span></span>, <span class="snp  "><span>PF3561</span></span>, <span class="snp  "><span>PF3562</span></span>, <span class="snp  "><span>YSC0000056</span></span>, <span class="snp  "><span>YSC0000265</span></span>, <span class="snp snp-neg "><span>PF3554</span>/<span>P123</span></span>, <span class="snp snp-neg "><span>PF3553</span>/<span>P124</span></span>, <span class="snp snp-pos "><span>PF3558</span>/<span>P126</span></span>, <span class="snp snp-neg "><span>PF3526</span>/<span>P127</span></span>, <span class="snp snp-neg "><span>PF3525</span>/<span>P130</span>/<span>S22</span></span>, <span class="snp snp-neg "><span>M429</span>/<span>P125</span></span>, <span class="snp snp-neg "><span>P129</span></span>, <span class="snp  snp-notGenoTested "><span>S2</span></span>&nbsp;<span class='tree-scores'></span></div><div class='tree pred-subclade' style = 'padding-left: 100px;'><span class='tree-hap '>I</span>&nbsp;&nbsp;<span class="snp  "><span>PF3618</span></span>, <span class="snp snp-neg "><span>CTS10058</span></span>, <span class="snp  "><span>CTS11441</span></span>, <span class="snp  "><span>CTS2193</span></span>, <span class="snp  "><span>CTS2514</span>/<span>PF3706</span></span>, <span class="snp  "><span>CTS2536</span></span>, <span class="snp  "><span>CTS3517</span></span>, <span class="snp  "><span>CTS4088</span></span>, <span class="snp  "><span>CTS4848</span></span>, <span class="snp  "><span>CTS4982</span></span>, <span class="snp snp-neg "><span>CTS5650</span></span>, <span class="snp  "><span>CTS5908</span></span>, <span class="snp  "><span>CTS6265</span></span>, <span class="snp  "><span>CTS674</span></span>, <span class="snp  "><span>CTS7329</span></span>, <span class="snp  "><span>CTS7502</span></span>, <span class="snp  "><span>CTS7831</span></span>, <span class="snp  "><span>CTS8333</span></span>, <span class="snp  "><span>CTS8345</span></span>, <span class="snp  "><span>CTS8420</span></span>, <span class="snp  "><span>CTS88</span></span>, <span class="snp snp-neg "><span>CTS8876</span></span>, <span class="snp snp-neg "><span>CTS9264</span></span>, <span class="snp  "><span>L578</span></span>, <span class="snp  "><span>L751</span></span>, <span class="snp  "><span>L755</span></span>, <span class="snp  "><span>L756</span></span>, <span class="snp snp-neg "><span>L758</span></span>, <span class="snp  "><span>L772</span></span>, <span class="snp  "><span>PF3574</span></span>, <span class="snp  "><span>PF3575</span></span>, <span class="snp  "><span>PF3578</span></span>, <span class="snp  "><span>PF3586</span></span>, <span class="snp  "><span>PF3588</span></span>, <span class="snp  "><span>PF3590</span></span>, <span class="snp  "><span>PF3594</span></span>, <span class="snp  "><span>PF3596</span></span>, <span class="snp  "><span>PF3600</span></span>, <span class="snp  "><span>PF3604</span></span>, <span class="snp  "><span>PF3605</span></span>, <span class="snp  "><span>PF3611</span></span>, <span class="snp  "><span>PF3612</span></span>, <span class="snp  "><span>PF3616</span></span>, <span class="snp  "><span>PF3622</span></span>, <span class="snp  "><span>PF3625</span></span>, <span class="snp  "><span>PF3639</span></span>, <span class="snp  "><span>PF3640</span></span>, <span class="snp  "><span>PF3641</span></span>, <span class="snp  "><span>PF3642</span></span>, <span class="snp  "><span>PF3654</span></span>, <span class="snp  "><span>PF3660</span></span>, <span class="snp snp-neg "><span>PF3666</span></span>, <span class="snp  "><span>PF3672</span></span>, <span class="snp  "><span>PF3675</span></span>, <span class="snp  "><span>PF3677</span></span>, <span class="snp  "><span>PF3686</span></span>, <span class="snp  "><span>PF3694</span></span>, <span class="snp  "><span>PF3780</span></span>, <span class="snp  "><span>PF3800</span></span>, <span class="snp  "><span>PF3804</span></span>, <span class="snp  "><span>PF3806</span></span>, <span class="snp  "><span>PF3807</span></span>, <span class="snp  "><span>PF3809</span></span>, <span class="snp  "><span>PF3811</span></span>, <span class="snp  "><span>PF3814</span></span>, <span class="snp  "><span>PF3815</span></span>, <span class="snp snp-neg "><span>PF3819</span></span>, <span class="snp  "><span>PF3822</span></span>, <span class="snp  "><span>PF3836</span></span>, <span class="snp  "><span>PF3837</span></span>, <span class="snp  "><span>YSC0000256</span></span>, <span class="snp  "><span>YSC0000260</span></span>, <span class="snp  "><span>YSC0000267</span></span>, <span class="snp  "><span>YSC0000272</span></span>, <span class="snp  "><span>YSC0000280</span></span>, <span class="snp  "><span>YSC0000281</span></span>, <span class="snp  "><span>YSC0000298</span></span>, <span class="snp  "><span>YSC0000300</span></span>, <span class="snp snp-neg "><span>M170</span>/<span>PF3715</span></span>, <span class="snp  "><span>L41</span>/<span>PF3787</span></span>, <span class="snp snp-neg "><span>M258</span>/<span>PF3721</span></span>, <span class="snp  snp-notGenoTested "><span>P19</span><sup>R</sup></span>, <span class="snp snp-pos "><span>P38</span></span>, <span class="snp snp-neg "><span>P212</span></span>, <span class="snp snp-neg "><span>U179</span></span>&nbsp;<span class='tree-scores'></span></div><div class='tree ' style = 'padding-left: 110px;'><span class='tree-hap '>I1</span>&nbsp;&nbsp;<span class="snp  "><span>L759</span></span>, <span class="snp  "><span>CTS10140</span></span>, <span class="snp  "><span>CTS10338</span></span>, <span class="snp  "><span>CTS11036</span></span>, <span class="snp  "><span>CTS11042</span></span>, <span class="snp  "><span>CTS11526</span></span>, <span class="snp  "><span>CTS11552</span></span>, <span class="snp  "><span>CTS11775</span></span>, <span class="snp  "><span>CTS11783</span></span>, <span class="snp  "><span>CTS11950</span></span>, <span class="snp  "><span>CTS1393</span></span>, <span class="snp  "><span>CTS2375</span></span>, <span class="snp  "><span>CTS2524</span></span>, <span class="snp  "><span>CTS2644</span></span>, <span class="snp  "><span>CTS2738</span></span>, <span class="snp  "><span>CTS3843</span></span>, <span class="snp  "><span>CTS4130</span></span>, <span class="snp  "><span>CTS4295</span></span>, <span class="snp  "><span>CTS5167</span></span>, <span class="snp  "><span>CTS5408</span></span>, <span class="snp  "><span>CTS5513</span></span>, <span class="snp  "><span>CTS565</span></span>, <span class="snp  "><span>CTS5705</span></span>, <span class="snp  "><span>CTS571</span></span>, <span class="snp  "><span>CTS5783</span></span>, <span class="snp  "><span>CTS5891</span></span>, <span class="snp  "><span>CTS5993</span></span>, <span class="snp  "><span>CTS6140</span></span>, <span class="snp  "><span>CTS6221</span></span>, <span class="snp  "><span>CTS6395</span></span>, <span class="snp  "><span>CTS641</span></span>, <span class="snp  "><span>CTS6629</span></span>, <span class="snp  "><span>CTS7267</span></span>, <span class="snp  "><span>CTS7949</span></span>, <span class="snp  "><span>CTS8394</span></span>, <span class="snp  "><span>CTS8716</span></span>, <span class="snp  "><span>CTS9288</span></span>, <span class="snp snp-neg "><span>F3033</span></span>, <span class="snp snp-neg "><span>L509</span></span>, <span class="snp  "><span>L574</span></span>, <span class="snp  "><span>L575</span></span>, <span class="snp  "><span>L740</span></span>, <span class="snp  "><span>L750</span></span>, <span class="snp  "><span>PAGES00123</span></span>, <span class="snp  "><span>YSC0000257</span></span>, <span class="snp  "><span>YSC0000259</span></span>, <span class="snp  "><span>YSC0000264</span></span>, <span class="snp  "><span>YSC0000299</span></span>, <span class="snp  "><span>YSC0000301</span></span>, <span class="snp  "><span>L75</span></span>, <span class="snp  "><span>L80</span></span>, <span class="snp snp-neg "><span>L118</span></span>, <span class="snp  "><span>L121</span>/<span>S62</span></span>, <span class="snp  "><span>L124</span>/<span>S64</span></span>, <span class="snp snp-neg "><span>L125</span>/<span>S65</span></span>, <span class="snp  "><span>L157</span><sup>R</sup></span>, <span class="snp  "><span>L187</span></span>, <span class="snp snp-neg "><span>M253</span></span>, <span class="snp snp-neg "><span>M307</span>/<span>P203</span><sup>R</sup></span>, <span class="snp snp-neg "><span>P30</span></span>, <span class="snp snp-neg "><span>M450</span>/<span>S109</span></span>, <span class="snp snp-neg "><span>L64</span></span>, <span class="snp  snp-notGenoTested "><span>L81</span></span>, <span class="snp  snp-notGenoTested "><span>L123</span></span>, <span class="snp  snp-notGenoTested "><span>L186</span></span>, <span class="snp snp-neg "><span>L840</span></span>, <span class="snp  snp-notGenoTested "><span>P40</span></span>, <span class="snp  snp-notGenoTested "><span>S63</span></span>, <span class="snp  snp-notGenoTested "><span>S66</span></span>, <span class="snp  snp-notGenoTested "><span>S107</span></span>, <span class="snp  snp-notGenoTested "><span>S108</span></span>, <span class="snp  snp-notGenoTested "><span>S110</span></span>, <span class="snp  snp-notGenoTested "><span>S111</span></span>&nbsp;<span class='tree-scores'></span></div><div class='tree ' style = 'padding-left: 110px;'><span class='tree-hap '>I2</span>&nbsp;&nbsp;<span class="snp  "><span>PF3634</span></span>, <span class="snp  "><span>PF3623</span></span>, <span class="snp  "><span>PF3664</span></span>, <span class="snp  "><span>CTS3296</span></span>, <span class="snp  "><span>CTS4039</span></span>, <span class="snp  "><span>CTS5727</span></span>, <span class="snp  "><span>PF3595</span></span>, <span class="snp  "><span>PF3607</span></span>, <span class="snp  "><span>PF3621</span></span>, <span class="snp  "><span>PF3626</span></span>, <span class="snp  "><span>PF3644</span></span>, <span class="snp  "><span>PF3651</span></span>, <span class="snp  "><span>PF3652</span></span>, <span class="snp  "><span>PF3657</span></span>, <span class="snp  "><span>PF3658</span></span>, <span class="snp  "><span>PF3667</span></span>, <span class="snp  "><span>PF3669</span></span>, <span class="snp  "><span>PF3671</span></span>, <span class="snp  "><span>PF3798</span></span>, <span class="snp  "><span>PF3801</span></span>, <span class="snp  "><span>PF3802</span></span>, <span class="snp  "><span>PF3812</span></span>, <span class="snp  "><span>PF3820</span></span>, <span class="snp  "><span>PF3849</span></span>, <span class="snp  "><span>L68</span>/<span>S329</span></span>, <span class="snp snp-neg "><span>M438</span>/<span>P215</span>/<span>PF3853</span>/<span>S31</span></span>&nbsp;<span class='tree-scores'></span></div><div class='tree ' style = 'padding-left: 100px;'><span class='tree-hap '>J</span>&nbsp;&nbsp;<span class="snp  "><span>YSC0000239</span></span>, <span class="snp snp-neg "><span>CTS3936</span></span>, <span class="snp  "><span>CTS1068</span></span>, <span class="snp  "><span>CTS10858</span></span>, <span class="snp  "><span>CTS11571</span></span>, <span class="snp  "><span>CTS11765</span></span>, <span class="snp  "><span>CTS11787</span></span>, <span class="snp  "><span>CTS12047</span></span>, <span class="snp  "><span>CTS2769</span></span>, <span class="snp snp-neg "><span>CTS5280</span></span>, <span class="snp snp-neg "><span>CTS5628</span></span>, <span class="snp  "><span>CTS7738</span></span>, <span class="snp  "><span>CTS852</span></span>, <span class="snp  "><span>CTS8938</span></span>, <span class="snp  "><span>F1167</span></span>, <span class="snp  "><span>F1181</span></span>, <span class="snp  "><span>F1634</span></span>, <span class="snp  "><span>F1744</span></span>, <span class="snp  "><span>F2116</span></span>, <span class="snp  "><span>F2174</span></span>, <span class="snp  "><span>F2276</span></span>, <span class="snp  "><span>F2390</span></span>, <span class="snp snp-neg "><span>F2502</span></span>, <span class="snp  "><span>F2746</span></span>, <span class="snp  "><span>F2749</span></span>, <span class="snp  "><span>F2769</span></span>, <span class="snp  "><span>F2817</span></span>, <span class="snp  "><span>F2839</span></span>, <span class="snp  "><span>F2973</span></span>, <span class="snp  "><span>F3074</span></span>, <span class="snp  "><span>F3119</span></span>, <span class="snp  "><span>F3347</span></span>, <span class="snp  "><span>F3358</span></span>, <span class="snp snp-neg "><span>F3384</span></span>, <span class="snp  "><span>F4072</span></span>, <span class="snp  "><span>L778</span></span>, <span class="snp  "><span>PF4490</span></span>, <span class="snp  "><span>PF4491</span></span>, <span class="snp  "><span>PF4513</span></span>, <span class="snp  "><span>PF4521</span></span>, <span class="snp  "><span>PF4530</span></span>, <span class="snp  "><span>PF4572</span></span>, <span class="snp  "><span>PF4591</span></span>, <span class="snp  "><span>PF4595</span></span>, <span class="snp  "><span>PF4598</span></span>, <span class="snp  "><span>PF4622</span></span>, <span class="snp  "><span>YSC0000064</span></span>, <span class="snp  "><span>YSC0000066</span></span>, <span class="snp  "><span>YSC0000165</span></span>, <span class="snp  "><span>YSC0000197</span></span>, <span class="snp  "><span>YSC0000228</span></span>, <span class="snp  "><span>YSC0000236</span></span>, <span class="snp  "><span>L134</span>/<span>PF4539</span></span>, <span class="snp snp-neg "><span>M304</span>/<span>PAGE16</span>/<span>PF4609</span></span>, <span class="snp  "><span>PF4584</span>/<span>P209</span></span>, <span class="snp  snp-notGenoTested "><span>12F2</span><sup>R</sup></span>, <span class="snp  snp-notGenoTested "><span>L60</span>/<span>S6</span></span>, <span class="snp  snp-notGenoTested "><span>S34</span></span>, <span class="snp  snp-notGenoTested "><span>S35</span></span>&nbsp;<span class='tree-scores'></span></div><div class='tree ' style = 'padding-left: 110px;'><span class='tree-hap '>J1</span>&nbsp;&nbsp;<span class="snp  "><span>YSC0000078</span></span>, <span class="snp  "><span>YSC0000187</span></span>, <span class="snp  "><span>PF4636</span></span>, <span class="snp  "><span>PF4661</span></span>, <span class="snp  "><span>CTS5169</span></span>, <span class="snp  "><span>CTS10640</span></span>, <span class="snp  "><span>CTS1138</span></span>, <span class="snp  "><span>CTS1547</span></span>, <span class="snp  "><span>CTS1983</span></span>, <span class="snp  "><span>CTS3210</span></span>, <span class="snp  "><span>CTS3401</span></span>, <span class="snp  "><span>CTS3492</span></span>, <span class="snp  "><span>CTS4025</span></span>, <span class="snp  "><span>CTS4133</span></span>, <span class="snp  "><span>CTS426</span></span>, <span class="snp  "><span>CTS4294</span></span>, <span class="snp  "><span>CTS5285</span></span>, <span class="snp  "><span>CTS5394</span></span>, <span class="snp  "><span>CTS7412</span></span>, <span class="snp  "><span>CTS7598</span></span>, <span class="snp  "><span>CTS8183</span></span>, <span class="snp  "><span>CTS8340</span></span>, <span class="snp  "><span>F1825</span></span>, <span class="snp  "><span>F2058</span></span>, <span class="snp  "><span>F4200</span></span>, <span class="snp  "><span>F4287</span></span>, <span class="snp  "><span>F4289</span></span>, <span class="snp  "><span>L765</span></span>, <span class="snp  "><span>M497</span></span>, <span class="snp  "><span>PF4630</span></span>, <span class="snp  "><span>PF4632</span></span>, <span class="snp  "><span>PF4653</span></span>, <span class="snp  "><span>PF4656</span></span>, <span class="snp  "><span>PF4659</span></span>, <span class="snp  "><span>PF4662</span></span>, <span class="snp  "><span>PF4664</span></span>, <span class="snp  "><span>PF4668</span></span>, <span class="snp  "><span>PF4669</span></span>, <span class="snp  "><span>PF4672</span></span>, <span class="snp  "><span>PF4675</span></span>, <span class="snp  "><span>PF4676</span></span>, <span class="snp  "><span>PF4695</span></span>, <span class="snp  "><span>PF4738</span></span>, <span class="snp  "><span>PF4759</span></span>, <span class="snp  "><span>PF4761</span></span>, <span class="snp  "><span>PF4762</span></span>, <span class="snp  "><span>PF4764</span></span>, <span class="snp  "><span>PF4768</span></span>, <span class="snp  "><span>PF4769</span></span>, <span class="snp  "><span>PF4773</span></span>, <span class="snp  "><span>PF4774</span></span>, <span class="snp  "><span>PF4780</span></span>, <span class="snp  "><span>PF4787</span></span>, <span class="snp  "><span>PF4788</span></span>, <span class="snp  "><span>YSC0000063</span></span>, <span class="snp  "><span>YSC0000068</span></span>, <span class="snp  "><span>YSC0000069</span></span>, <span class="snp  "><span>YSC0000079</span></span>, <span class="snp  "><span>YSC0000172</span></span>, <span class="snp  "><span>YSC0000175</span></span>, <span class="snp  "><span>YSC0000177</span></span>, <span class="snp  "><span>YSC0000198</span></span>, <span class="snp  "><span>YSC0000199</span></span>, <span class="snp  "><span>YSC0000209</span></span>, <span class="snp  "><span>YSC0000218</span></span>, <span class="snp  "><span>YSC0000226</span></span>, <span class="snp  "><span>L321</span>/<span>PF4646</span></span>, <span class="snp snp-neg "><span>M267</span>/<span>PF4782</span></span>, <span class="snp  snp-notGenoTested "><span>L255</span></span>&nbsp;<span class='tree-scores'></span></div><div class='tree ' style = 'padding-left: 110px;'><span class='tree-hap '>J2</span>&nbsp;&nbsp;<span class="snp  "><span>F4272</span></span>, <span class="snp  "><span>PF4898</span></span>, <span class="snp  "><span>PF4926</span></span>, <span class="snp  "><span>CTS7404</span></span>, <span class="snp  "><span>CTS886</span></span>, <span class="snp  "><span>F3343</span></span>, <span class="snp  "><span>F4283</span></span>, <span class="snp  "><span>PF4597</span></span>, <span class="snp  "><span>PF4886</span></span>, <span class="snp  "><span>PF4925</span></span>, <span class="snp  "><span>PF4935</span></span>, <span class="snp snp-neg "><span>M172</span>/<span>PAGE28</span>/<span>PF4908</span></span>, <span class="snp  "><span>L228</span>/<span>PF4895</span>/<span>S321</span></span>&nbsp;<span class='tree-scores'></span></div><div class='tree pred-subclade' style = 'padding-left: 90px;'><span class='tree-hap '>K</span>&nbsp;&nbsp;<span class="snp snp-pos "><span>PF5504</span>/<span>P128</span></span>, <span class="snp snp-pos "><span>PF5493</span>/<span>P131</span></span>, <span class="snp snp-pos "><span>PF5480</span>/<span>P132</span></span>, <span class="snp snp-pos "><span>M9</span></span>&nbsp;<span class='tree-scores'></span></div><div class='tree ' style = 'padding-left: 100px;'><span class='tree-hap '>LT</span>&nbsp;&nbsp;<span class="snp  "><span>PF5535</span></span>, <span class="snp  "><span>CTS2888</span></span>, <span class="snp  "><span>CTS3648</span></span>, <span class="snp  "><span>CTS4783</span></span>, <span class="snp  "><span>CTS5175</span></span>, <span class="snp  "><span>CTS6888</span></span>, <span class="snp  "><span>CTS753</span></span>, <span class="snp  "><span>PF5519</span></span>, <span class="snp  "><span>PF5526</span></span>, <span class="snp  "><span>PF5531</span></span>, <span class="snp  "><span>PF5536</span></span>, <span class="snp  "><span>PF5566</span></span>, <span class="snp  "><span>PF5586</span></span>, <span class="snp  "><span>L298</span>/<span>P326</span></span>, <span class="snp  snp-notGenoTested "><span>L811</span></span>&nbsp;<span class='tree-scores'></span></div><div class='tree ' style = 'padding-left: 110px;'><span class='tree-hap '>L</span>&nbsp;&nbsp;<span class="snp  "><span>PF5821</span></span>, <span class="snp  "><span>PAGES00121</span></span>, <span class="snp  "><span>PF5516</span></span>, <span class="snp  "><span>PF5517</span></span>, <span class="snp  "><span>PF5522</span></span>, <span class="snp  "><span>PF5524</span></span>, <span class="snp  "><span>PF5528</span></span>, <span class="snp  "><span>PF5532</span></span>, <span class="snp  "><span>PF5539</span></span>, <span class="snp  "><span>PF5554</span></span>, <span class="snp  "><span>PF5557</span></span>, <span class="snp  "><span>PF5563</span></span>, <span class="snp  "><span>PF5564</span></span>, <span class="snp  "><span>PF5583</span></span>, <span class="snp  "><span>PF5683</span></span>, <span class="snp  "><span>PF5686</span></span>, <span class="snp  "><span>PF5689</span></span>, <span class="snp  "><span>PF5692</span></span>, <span class="snp  "><span>PF5693</span></span>, <span class="snp  "><span>PF5694</span></span>, <span class="snp  "><span>PF5695</span></span>, <span class="snp  "><span>PF5699</span></span>, <span class="snp  "><span>PF5705</span></span>, <span class="snp  "><span>PF5715</span></span>, <span class="snp  "><span>PF5717</span></span>, <span class="snp  "><span>PF5718</span></span>, <span class="snp  "><span>PF5720</span></span>, <span class="snp  "><span>PF5723</span></span>, <span class="snp  "><span>PF5729</span></span>, <span class="snp  "><span>PF5732</span></span>, <span class="snp  "><span>PF5733</span></span>, <span class="snp  "><span>PF5737</span></span>, <span class="snp  "><span>PF5743</span></span>, <span class="snp  "><span>PF5744</span></span>, <span class="snp  "><span>PF5747</span></span>, <span class="snp  "><span>PF5754</span></span>, <span class="snp  "><span>PF5756</span></span>, <span class="snp  "><span>PF5757</span></span>, <span class="snp  "><span>PF5771</span></span>, <span class="snp  "><span>PF5773</span></span>, <span class="snp  "><span>PF5779</span></span>, <span class="snp  "><span>PF5790</span></span>, <span class="snp  "><span>PF5791</span></span>, <span class="snp  "><span>PF5795</span></span>, <span class="snp  "><span>PF5802</span></span>, <span class="snp  "><span>PF5804</span></span>, <span class="snp  "><span>PF5806</span></span>, <span class="snp  "><span>PF5810</span></span>, <span class="snp  "><span>PF5813</span></span>, <span class="snp  "><span>PF5815</span></span>, <span class="snp  "><span>PF5823</span></span>, <span class="snp  "><span>PF5829</span></span>, <span class="snp  "><span>PF5830</span></span>, <span class="snp  "><span>PF5832</span></span>, <span class="snp  "><span>PF5833</span></span>, <span class="snp  "><span>PF5837</span></span>, <span class="snp  "><span>PF5839</span></span>, <span class="snp  "><span>PF5841</span></span>, <span class="snp  "><span>PF5842</span></span>, <span class="snp  "><span>PF5844</span></span>, <span class="snp snp-neg "><span>M11</span></span>, <span class="snp snp-neg "><span>M20</span>/<span>PF5570</span></span>, <span class="snp snp-neg "><span>M61</span>/<span>PAGE43</span></span>, <span class="snp snp-neg "><span>M185</span>/<span>PF5755</span></span>, <span class="snp  snp-notGenoTested "><span>L855</span></span>, <span class="snp  snp-notGenoTested "><span>L863</span></span>, <span class="snp  snp-notGenoTested "><span>L878</span></span>, <span class="snp  snp-notGenoTested "><span>L879</span></span>&nbsp;<span class='tree-scores'></span></div><div class='tree ' style = 'padding-left: 110px;'><span class='tree-hap '>T</span>&nbsp;&nbsp;<span class="snp  "><span>PF5589</span></span>, <span class="snp  "><span>CTS4201</span>/<span>PF5621</span></span>, <span class="snp  "><span>PF5609</span></span>, <span class="snp  "><span>CTS10278</span></span>, <span class="snp  "><span>CTS10416</span>/<span>PF5655</span></span>, <span class="snp  "><span>CTS10700</span></span>, <span class="snp  "><span>CTS10879</span></span>, <span class="snp  "><span>CTS11054</span></span>, <span class="snp  "><span>CTS11569</span></span>, <span class="snp  "><span>CTS11746</span></span>, <span class="snp  "><span>CTS12657</span></span>, <span class="snp  "><span>CTS150</span></span>, <span class="snp  "><span>CTS2336</span></span>, <span class="snp  "><span>CTS3585</span>/<span>PF5618</span></span>, <span class="snp  "><span>CTS3837</span></span>, <span class="snp  "><span>CTS4014</span></span>, <span class="snp  "><span>CTS4652</span>/<span>PF5547</span></span>, <span class="snp  "><span>CTS482</span>/<span>PF5596</span></span>, <span class="snp  "><span>CTS493</span>/<span>PF5597</span></span>, <span class="snp  "><span>CTS5035</span></span>, <span class="snp  "><span>CTS5268</span>/<span>PF7471</span></span>, <span class="snp  "><span>CTS5332</span>/<span>PF7472</span></span>, <span class="snp  "><span>CTS5336</span>/<span>PF5626</span></span>, <span class="snp  "><span>CTS5364</span></span>, <span class="snp  "><span>CTS573</span></span>, <span class="snp  "><span>CTS5987</span></span>, <span class="snp  "><span>CTS6004</span></span>, <span class="snp  "><span>CTS6045</span>/<span>PF5629</span></span>, <span class="snp  "><span>CTS6214</span>/<span>PF5631</span></span>, <span class="snp  "><span>CTS6275</span>/<span>PF7447</span></span>, <span class="snp  "><span>CTS6276</span></span>, <span class="snp  "><span>CTS6375</span></span>, <span class="snp  "><span>CTS6577</span></span>, <span class="snp  "><span>CTS6805</span>/<span>PF5636</span></span>, <span class="snp  "><span>CTS6887</span>/<span>PF5637</span></span>, <span class="snp  "><span>CTS7164</span></span>, <span class="snp  "><span>CTS7263</span></span>, <span class="snp  "><span>CTS7426</span></span>, <span class="snp  "><span>CTS8004</span>/<span>PF5641</span></span>, <span class="snp  "><span>CTS8247</span></span>, <span class="snp  "><span>CTS8397</span>/<span>PF5646</span></span>, <span class="snp  "><span>CTS8994</span></span>, <span class="snp  "><span>CTS9268</span>/<span>PF5651</span></span>, <span class="snp  "><span>CTS9308</span></span>, <span class="snp snp-neg "><span>PAGES00078</span></span>, <span class="snp  "><span>PAGES00129</span></span>, <span class="snp  "><span>PF5518</span></span>, <span class="snp  "><span>PF5529</span></span>, <span class="snp  "><span>PF5537</span></span>, <span class="snp  "><span>PF5568</span></span>, <span class="snp  "><span>PF5587</span></span>, <span class="snp  "><span>PF5588</span></span>, <span class="snp  "><span>PF5590</span></span>, <span class="snp  "><span>PF5592</span></span>, <span class="snp  "><span>PF5602</span></span>, <span class="snp  "><span>PF5603</span></span>, <span class="snp  "><span>PF5604</span></span>, <span class="snp  "><span>PF5607</span></span>, <span class="snp  "><span>PF5608</span></span>, <span class="snp  "><span>PF5610</span></span>, <span class="snp  "><span>PF5612</span></span>, <span class="snp  "><span>PF5613</span></span>, <span class="snp  "><span>PF5657</span></span>, <span class="snp  "><span>PF5659</span></span>, <span class="snp  "><span>PF5660</span></span>, <span class="snp  "><span>PF5661</span></span>, <span class="snp  "><span>PF5666</span></span>, <span class="snp  "><span>PF5673</span></span>, <span class="snp  "><span>PF5674</span></span>, <span class="snp  "><span>PF5678</span></span>, <span class="snp  "><span>PF7460</span></span>, <span class="snp  "><span>PF7463</span></span>, <span class="snp  "><span>PF7464</span></span>, <span class="snp  "><span>PF7465</span></span>, <span class="snp  "><span>PF7466</span></span>, <span class="snp  "><span>PF7480</span></span>, <span class="snp  "><span>PF7481</span></span>, <span class="snp  "><span>L455</span>/<span>PF5670</span></span>, <span class="snp snp-neg "><span>M272</span>/<span>PF5667</span></span>, <span class="snp  snp-notGenoTested "><span>L206</span></span>, <span class="snp  snp-notGenoTested "><span>L445</span></span>, <span class="snp  snp-notGenoTested "><span>L452</span></span>, <span class="snp  snp-notGenoTested "><span>L810</span></span>, <span class="snp snp-neg "><span>M184</span>/<span>PAGE34</span>/<span>USP9Y+3178</span></span>, <span class="snp  snp-notGenoTested "><span>M193</span></span>, <span class="snp  snp-notGenoTested "><span>PAGE129</span></span>&nbsp;<span class='tree-scores'></span></div><div class='tree ' style = 'padding-left: 100px;'><span class='tree-hap '>K(xLT)</span>&nbsp;&nbsp;<span class="snp  "><span>M526</span>/<span>PF5979</span></span>&nbsp;<span class='tree-scores'></span></div><div class='tree ' style = 'padding-left: 110px;'><span class='tree-hap '>K(xLT)~1</span>&nbsp;&nbsp;<span class="snp  "><span>F549</span></span>, <span class="snp  "><span>F650</span></span>&nbsp;<span class='tree-scores'></span></div><div class='tree ' style = 'padding-left: 110px;'><span class='tree-hap '>K1</span>&nbsp;&nbsp;<span class="snp snp-neg "><span>P60</span></span>, <span class="snp  snp-notGenoTested "><span>P304</span></span>, <span class="snp  "><span>P308</span></span>&nbsp;<span class='tree-scores'></span></div><div class='tree ' style = 'padding-left: 110px;'><span class='tree-hap '>K2</span>&nbsp;&nbsp;<span class="snp  "><span>P79</span></span>, <span class="snp snp-neg "><span>P299</span></span>, <span class="snp  "><span>P307</span></span>&nbsp;<span class='tree-scores'></span></div><div class='tree ' style = 'padding-left: 110px;'><span class='tree-hap '>K3</span>&nbsp;&nbsp;<span class="snp snp-neg "><span>P261</span></span>, <span class="snp snp-neg "><span>P263</span></span>&nbsp;<span class='tree-scores'></span></div><div class='tree ' style = 'padding-left: 110px;'><span class='tree-hap '>M</span>&nbsp;&nbsp;<span class="snp snp-neg "><span>P256</span></span>, <span class="snp snp-neg "><span>PAGE93</span>/<span>S322</span></span>&nbsp;<span class='tree-scores'></span></div><div class='tree ' style = 'padding-left: 110px;'><span class='tree-hap '>P</span>&nbsp;&nbsp;<span class="snp  "><span>F180</span></span>, <span class="snp  "><span>F332</span></span>, <span class="snp  "><span>P207</span>/<span>P27</span></span>, <span class="snp snp-pos "><span>PF5869</span></span>, <span class="snp  "><span>F647</span></span>, <span class="snp  "><span>PF5956</span></span>, <span class="snp snp-pos "><span>P244</span></span>, <span class="snp  "><span>YSC0000186</span></span>, <span class="snp  "><span>YSC0000270</span></span>, <span class="snp  "><span>CTS10168</span></span>, <span class="snp  "><span>CTS3135</span></span>, <span class="snp  "><span>CTS3358</span></span>, <span class="snp  "><span>CTS4437</span></span>, <span class="snp  "><span>CTS5884</span></span>, <span class="snp snp-pos "><span>F115</span></span>, <span class="snp  "><span>F212</span></span>, <span class="snp  "><span>F29</span></span>, <span class="snp snp-pos "><span>F313</span></span>, <span class="snp  "><span>F344</span></span>, <span class="snp  "><span>F359</span></span>, <span class="snp  "><span>F4</span></span>, <span class="snp  "><span>F506</span></span>, <span class="snp snp-pos "><span>F556</span></span>, <span class="snp  "><span>F640</span></span>, <span class="snp  "><span>F671</span></span>, <span class="snp snp-pos "><span>F83</span></span>, <span class="snp  "><span>L471</span>/<span>PF5989</span></span>, <span class="snp  "><span>L721</span>/<span>PF6020</span></span>, <span class="snp  "><span>L768</span>/<span>PF5976</span>/<span>YSC0000274</span></span>, <span class="snp  "><span>L779</span>/<span>PF5907</span>/<span>YSC0000251</span></span>, <span class="snp  "><span>L82</span></span>, <span class="snp snp-pos "><span>M45</span>/<span>PF5962</span></span>, <span class="snp snp-pos "><span>P284</span></span>, <span class="snp snp-pos "><span>PAGES00083</span></span>, <span class="snp  "><span>PF5465</span></span>, <span class="snp  "><span>PF5468</span></span>, <span class="snp  "><span>PF5471</span></span>, <span class="snp  "><span>PF5851</span></span>, <span class="snp  "><span>PF5853</span></span>, <span class="snp  "><span>PF5854</span></span>, <span class="snp  "><span>PF5865</span></span>, <span class="snp  "><span>PF5871</span></span>, <span class="snp  "><span>PF5882</span></span>, <span class="snp  "><span>PF5886</span></span>, <span class="snp  "><span>PF5887</span></span>, <span class="snp  "><span>PF5888</span></span>, <span class="snp  "><span>PF5957</span></span>, <span class="snp  "><span>PF5964</span></span>, <span class="snp  "><span>PF5965</span></span>, <span class="snp snp-pos "><span>PF5982</span></span>, <span class="snp  "><span>YSC0000176</span></span>, <span class="snp  "><span>YSC0000205</span></span>, <span class="snp  "><span>YSC0000227</span></span>, <span class="snp  "><span>YSC0000279</span></span>, <span class="snp  "><span>L781</span>/<span>PF5875</span>/<span>YSC0000255</span></span>, <span class="snp snp-pos "><span>PF5879</span>/<span>P226</span></span>, <span class="snp snp-pos "><span>PF5927</span>/<span>P228</span></span>, <span class="snp snp-pos "><span>PF5925</span>/<span>P230</span></span>, <span class="snp snp-pos "><span>PF5946</span>/<span>P235</span></span>, <span class="snp snp-pos "><span>PF5873</span>/<span>P237</span></span>, <span class="snp snp-pos "><span>PF5897</span>/<span>P240</span></span>, <span class="snp snp-pos "><span>PF5874</span>/<span>P243</span></span>, <span class="snp snp-pos "><span>PF5941</span>/<span>P281</span></span>, <span class="snp snp-pos "><span>PF5932</span>/<span>P282</span></span>, <span class="snp snp-pos "><span>PF5966</span>/<span>P283</span></span>, <span class="snp snp-pos "><span>PF5866</span>/<span>P295</span>/<span>S8</span></span>, <span class="snp  "><span>L536</span>/<span>PF5860</span></span>&nbsp;<span class='tree-scores'></span></div>
+</div><div class = 'ascent hidden' id='ascent-3' style='position:relative;'><h4 id = 'ascent-3-top' style='display:inline;'>Examining: R1b1a2a1a2a1b3~2 [R1b-L421 (R1b-L433, R1b-L88)]</h4><P>This suggested classification does not account for the following positive SNPs: <BR><textarea rows = 5 cols = 50 spellcheck='false' autocomplete='off'>CLFY16971
+CLFY18665
+CLFY4966
+CTS11948
+CTS12028
+CTS3229
+CTS4557
+CTS5808
+CTS5815
+CTS6327
+CTS8626
+F1857
+FB1947
+FB988
+FGC12056
+FGC199
+FGC24468
+FGC38
+FGC54
+FGC77
+FN1317
+FN495
+FN591
+FN833
+L1346
+L486
+L63
+L882
+M1185
+M1188
+M1189
+M1219
+M1226
+M1239
+M1272
+M141
+M17
+M198
+M2695
+M288
+M3639
+M3683
+M3698
+M3707
+M3735
+M3749
+M3771
+M511
+M514
+M515
+M5705
+M672
+M696
+M74
+M9118
+M9336
+M96
+N12
+P102
+P103
+P117
+P222
+P239
+P32
+P38
+P80
+PAGES00007
+PAGES00026
+PAGES00029
+PAGES00037
+PAGES00038
+PAGES00081
+PF1580
+PF2587
+PF2660
+PF2669
+PF2673
+PF2679
+PF2686
+PF2692
+PF2703
+PF2720
+PF2730
+PF2771
+PF2775
+PF3558
+PF3708
+PF518
+PF5505
+PF5506
+PF5861
+PF5863
+PF5870
+PF5896
+PF5901
+PF5915
+PF5930
+PF5934
+PF5951
+PF5963
+PF5977
+PF6036
+PF6050
+PF6126
+PF6147
+PF6203
+PF6234
+PF6238
+PF6240
+PF6276
+PF:14231292(A|G)
+PF:14432928(A|G)
+PF:14639427(C|A)
+PF:14692227(C|T)
+PF:14958218(C|T)
+PF:14993358(G|A)
+PF:15027529(T|G)
+PF:15086183(C|G)
+PF:16492547(T|C)
+PF:16971648(G|T)
+PF:18026855(A|G)
+PF:18109555(A|C)
+PF:18656508(C|G)
+PF:18865298(T|C)
+PF:18914441(T|C)
+PF:19179540(A|G)
+PF:21409706(C|G)
+PF:21410840(T|G)
+PF:22190371(G|A)
+PF:22739367(C|T)
+PF:23476936(T|G)
+PF:28590278(A|G)
+PF:28733101(G|C)
+PF:2887824(A|C)
+S118
+S24307
+S26596
+S26597
+S26598
+S27130
+S27150
+S27154
+S27177
+S27244
+S27310
+S27390
+S27470
+S27500
+S27554
+S27700
+U250
+YSC0000222
+YSC0001265
+Z11996
+Z8133
+Z8143
+Z8146</textarea><BR><P><div class='tree ' style = 'padding-left: 0px;'><span class='tree-hap not-geno-tested'>Root (Y-Adam)</span>&nbsp;&nbsp;</div>
+<div class='tree ' style = 'padding-left: 10px;'><span class='tree-hap not-geno-tested'>A0-T</span>&nbsp;&nbsp;<span class="snp  snp-notGenoTested "><span>AF3</span></span>, <span class="snp  snp-notGenoTested "><span>L1085</span></span>, <span class="snp  snp-notGenoTested "><span>L1089</span></span>, <span class="snp  snp-notGenoTested "><span>L1090</span></span>, <span class="snp  snp-notGenoTested "><span>L1093</span></span>, <span class="snp  snp-notGenoTested "><span>L1095</span></span>, <span class="snp  snp-notGenoTested "><span>L1098</span></span>, <span class="snp  snp-notGenoTested "><span>L1099</span></span>, <span class="snp  snp-notGenoTested "><span>L1101</span></span>, <span class="snp  snp-notGenoTested "><span>L1105</span></span>, <span class="snp  snp-notGenoTested "><span>L1116</span></span>, <span class="snp  snp-notGenoTested "><span>L1118</span></span>, <span class="snp  snp-notGenoTested "><span>L1120</span></span>, <span class="snp  snp-notGenoTested "><span>L1121</span></span>, <span class="snp  snp-notGenoTested "><span>L1123</span></span>, <span class="snp  snp-notGenoTested "><span>L1124</span></span>, <span class="snp  snp-notGenoTested "><span>L1125</span></span>, <span class="snp  snp-notGenoTested "><span>L1127</span></span>, <span class="snp  snp-notGenoTested "><span>L1128</span></span>, <span class="snp  snp-notGenoTested "><span>L1129</span></span>, <span class="snp  snp-notGenoTested "><span>L1130</span></span>, <span class="snp  snp-notGenoTested "><span>L1132</span></span>, <span class="snp  snp-notGenoTested "><span>L1135</span></span>, <span class="snp  snp-notGenoTested "><span>L1136</span></span>, <span class="snp  snp-notGenoTested "><span>L1137</span></span>, <span class="snp  snp-notGenoTested "><span>L1142</span></span>, <span class="snp  snp-notGenoTested "><span>L1143</span></span>, <span class="snp  snp-notGenoTested "><span>L1145</span></span>, <span class="snp  snp-notGenoTested "><span>L1150</span></span>, <span class="snp  snp-notGenoTested "><span>L1155</span></span>, <span class="snp  snp-notGenoTested "><span>L1235</span></span></div>
+<div class='tree ' style = 'padding-left: 20px;'><span class='tree-hap '>A1</span>&nbsp;&nbsp;<span class="snp  "><span>CTS3331</span></span>, <span class="snp  "><span>P305</span></span>, <span class="snp  "><span>V168</span></span>, <span class="snp  "><span>V171</span></span>, <span class="snp  "><span>V174</span></span>, <span class="snp  "><span>V238</span></span>, <span class="snp  "><span>V241</span></span>, <span class="snp  "><span>V250</span></span>, <span class="snp  snp-notGenoTested "><span>L985</span></span>, <span class="snp  snp-notGenoTested "><span>L986</span></span>, <span class="snp  snp-notGenoTested "><span>L989</span></span>, <span class="snp  snp-notGenoTested "><span>L1002</span></span>, <span class="snp  snp-notGenoTested "><span>L1003</span></span>, <span class="snp  snp-notGenoTested "><span>L1004</span></span>, <span class="snp  snp-notGenoTested "><span>L1005</span></span>, <span class="snp  snp-notGenoTested "><span>L1009</span></span>, <span class="snp  snp-notGenoTested "><span>L1013</span></span>, <span class="snp  snp-notGenoTested "><span>L1053</span></span>, <span class="snp  snp-notGenoTested "><span>L1084</span></span>, <span class="snp  snp-notGenoTested "><span>L1112</span></span>, <span class="snp  snp-notGenoTested "><span>L1153</span></span>, <span class="snp  snp-notGenoTested "><span>V161</span><sup>R</sup></span>&nbsp;<span class='tree-scores'></span></div>
+<div class='tree ' style = 'padding-left: 30px;'><span class='tree-hap '>A1b</span>&nbsp;&nbsp;<span class="snp  "><span>P108</span></span>, <span class="snp  "><span>V221</span></span>&nbsp;<span class='tree-scores'></span></div>
+<div class='tree ' style = 'padding-left: 40px;'><span class='tree-hap '>BT</span>&nbsp;&nbsp;<span class="snp  "><span>M139</span></span>, <span class="snp snp-pos "><span>M42</span></span>, <span class="snp snp-pos "><span>M94</span>/<span>PF1081</span></span>, <span class="snp  "><span>L440</span></span>, <span class="snp  "><span>L1061</span>/<span>PF1101</span></span>, <span class="snp  "><span>L1062</span>/<span>PF302</span></span>, <span class="snp snp-pos "><span>PK1</span></span>, <span class="snp  "><span>PF1407</span>/<span>V29</span></span>, <span class="snp  "><span>PF1411</span>/<span>V59</span></span>, <span class="snp  "><span>PF1412</span>/<span>V64</span></span>, <span class="snp  "><span>PF1406</span>/<span>V102</span></span>, <span class="snp  "><span>V187</span></span>, <span class="snp  snp-notGenoTested "><span>L413</span>/<span>PF1409</span>/<span>V31</span></span>, <span class="snp  snp-notGenoTested "><span>L418</span></span>, <span class="snp  snp-notGenoTested "><span>L438</span></span>, <span class="snp  snp-notGenoTested "><span>L604</span>/<span>PF1243</span></span>, <span class="snp  snp-notGenoTested "><span>L957</span></span>, <span class="snp  snp-notGenoTested "><span>L962</span></span>, <span class="snp  snp-notGenoTested "><span>L969</span></span>, <span class="snp  snp-notGenoTested "><span>L970</span>/<span>PF1065</span></span>, <span class="snp  snp-notGenoTested "><span>L971</span></span>, <span class="snp  snp-notGenoTested "><span>L977</span></span>, <span class="snp  snp-notGenoTested "><span>L1060</span>/<span>PF1021</span></span>, <span class="snp  snp-notGenoTested "><span>M91</span></span>, <span class="snp snp-pos "><span>M299</span></span>, <span class="snp  snp-notGenoTested "><span>P97</span></span>, <span class="snp snp-neg "><span>PAGE65</span>/<span>SRY1532</span>/<span>SRY10831</span><sup>R</sup></span>, <span class="snp  snp-notGenoTested "><span>V202</span></span>, <span class="snp  snp-notGenoTested "><span>PF1410</span>/<span>V235</span></span>&nbsp;<span class='tree-scores'></span></div>
+<div class='tree ' style = 'padding-left: 50px;'><span class='tree-hap '>CT</span>&nbsp;&nbsp;<span class="snp  "><span>PF1269</span></span>, <span class="snp  "><span>PF258</span></span>, <span class="snp  "><span>CTS125</span></span>, <span class="snp  "><span>CTS5318</span></span>, <span class="snp  "><span>PF954</span></span>, <span class="snp snp-pos "><span>M294</span></span>, <span class="snp  "><span>PF779</span></span>, <span class="snp  "><span>PF110</span></span>, <span class="snp  "><span>PF821</span></span>, <span class="snp  "><span>PF1276</span></span>, <span class="snp  "><span>V189</span></span>, <span class="snp  "><span>PF192</span></span>, <span class="snp  "><span>CTS10362</span></span>, <span class="snp  "><span>CTS109</span></span>, <span class="snp  "><span>CTS11358</span></span>, <span class="snp  "><span>CTS11575</span></span>, <span class="snp  "><span>CTS1996</span></span>, <span class="snp  "><span>CTS3431</span></span>, <span class="snp  "><span>CTS3662</span></span>, <span class="snp  "><span>CTS4364</span></span>, <span class="snp  "><span>CTS4368</span></span>, <span class="snp  "><span>CTS4740</span></span>, <span class="snp  "><span>CTS5457</span></span>, <span class="snp  "><span>CTS5532</span></span>, <span class="snp  "><span>CTS6383</span></span>, <span class="snp  "><span>CTS6800</span></span>, <span class="snp  "><span>CTS6907</span></span>, <span class="snp  "><span>CTS7922</span></span>, <span class="snp  "><span>CTS7933</span></span>, <span class="snp  "><span>CTS8243</span></span>, <span class="snp  "><span>CTS8980</span></span>, <span class="snp  "><span>CTS9828</span></span>, <span class="snp snp-pos "><span>M168</span>/<span>PF1416</span></span>, <span class="snp  "><span>PF1016</span></span>, <span class="snp  "><span>PF1029</span></span>, <span class="snp  "><span>PF1031</span></span>, <span class="snp  "><span>PF1040</span></span>, <span class="snp  "><span>PF1046</span></span>, <span class="snp  "><span>PF1061</span></span>, <span class="snp  "><span>PF1092</span></span>, <span class="snp  "><span>PF1097</span></span>, <span class="snp  "><span>PF1203</span></span>, <span class="snp  "><span>PF210</span></span>, <span class="snp  "><span>PF212</span></span>, <span class="snp  "><span>PF223</span></span>, <span class="snp  "><span>PF234</span></span>, <span class="snp  "><span>PF263</span></span>, <span class="snp  "><span>PF272</span></span>, <span class="snp  "><span>PF278</span></span>, <span class="snp  "><span>PF292</span></span>, <span class="snp  "><span>PF316</span></span>, <span class="snp  "><span>PF325</span></span>, <span class="snp  "><span>PF342</span></span>, <span class="snp  "><span>PF500</span></span>, <span class="snp  "><span>PF667</span></span>, <span class="snp  "><span>PF719</span></span>, <span class="snp  "><span>PF725</span></span>, <span class="snp  "><span>PF796</span></span>, <span class="snp  "><span>PF803</span></span>, <span class="snp  "><span>PF815</span></span>, <span class="snp  "><span>PF840</span></span>, <span class="snp  "><span>PF844</span></span>, <span class="snp  "><span>PF892</span></span>, <span class="snp  "><span>PF937</span></span>, <span class="snp  "><span>PF951</span></span>, <span class="snp  "><span>PF970</span></span>, <span class="snp  "><span>V52</span></span>, <span class="snp  "><span>V9</span></span>, <span class="snp  snp-notGenoTested "><span>P9</span><sup>R</sup></span>&nbsp;<span class='tree-scores'></span></div>
+<div class='tree ' style = 'padding-left: 60px;'><span class='tree-hap not-geno-tested'>CF</span>&nbsp;&nbsp;<span class="snp snp-pos "><span>P143</span></span></div>
+<div class='tree ' style = 'padding-left: 70px;'><span class='tree-hap '>F</span>&nbsp;&nbsp;<span class="snp  "><span>F2048</span></span>, <span class="snp snp-pos "><span>PF2745</span></span>, <span class="snp  "><span>F2075</span></span>, <span class="snp  "><span>PF2631</span></span>, <span class="snp  "><span>F1320</span></span>, <span class="snp  "><span>F2142</span></span>, <span class="snp  "><span>F1302</span></span>, <span class="snp  "><span>F3111</span></span>, <span class="snp  "><span>F2710</span></span>, <span class="snp  "><span>F2985</span></span>, <span class="snp  "><span>L498</span></span>, <span class="snp  "><span>PF2599</span></span>, <span class="snp  "><span>CTS11726</span></span>, <span class="snp snp-pos "><span>CTS12632</span></span>, <span class="snp  "><span>CTS3536</span></span>, <span class="snp  "><span>CTS3654</span></span>, <span class="snp snp-neg "><span>CTS3868</span></span>, <span class="snp  "><span>CTS3996</span></span>, <span class="snp  "><span>CTS4443</span></span>, <span class="snp  "><span>CTS6135</span></span>, <span class="snp  "><span>F1046</span></span>, <span class="snp  "><span>F1209</span></span>, <span class="snp  "><span>F1329</span></span>, <span class="snp  "><span>F1704</span></span>, <span class="snp  "><span>F1714</span></span>, <span class="snp  "><span>F1753</span></span>, <span class="snp snp-pos "><span>F1767</span></span>, <span class="snp  "><span>F2155</span></span>, <span class="snp  "><span>F2402</span></span>, <span class="snp  "><span>F2587</span></span>, <span class="snp  "><span>F2688</span></span>, <span class="snp  "><span>F2837</span></span>, <span class="snp  "><span>F2993</span></span>, <span class="snp  "><span>F3136</span></span>, <span class="snp  "><span>F3335</span></span>, <span class="snp  "><span>F3556</span></span>, <span class="snp  "><span>F3692</span></span>, <span class="snp  "><span>F719</span></span>, <span class="snp snp-pos "><span>L350</span></span>, <span class="snp  "><span>L468</span></span>, <span class="snp snp-pos "><span>L470</span></span>, <span class="snp snp-pos "><span>PF2591</span></span>, <span class="snp  "><span>PF2593</span></span>, <span class="snp  "><span>PF2600</span></span>, <span class="snp  "><span>PF2608</span></span>, <span class="snp  "><span>PF2611</span></span>, <span class="snp  "><span>PF2615</span></span>, <span class="snp  "><span>PF2624</span></span>, <span class="snp  "><span>PF2643</span></span>, <span class="snp  "><span>PF2747</span></span>, <span class="snp  "><span>PF2748</span></span>, <span class="snp  "><span>PF2749</span></span>, <span class="snp  "><span>PF2770</span></span>, <span class="snp  "><span>V186</span></span>, <span class="snp  "><span>V205</span></span>, <span class="snp  "><span>L132</span><sup>R</sup></span>, <span class="snp snp-pos "><span>M89</span>/<span>PF2746</span></span>, <span class="snp  "><span>M235</span>/<span>PAGE80</span>/<span>PF2665</span></span>, <span class="snp snp-pos "><span>PF2704</span>/<span>P14</span></span>, <span class="snp snp-pos "><span>PF2741</span>/<span>P135</span></span>, <span class="snp snp-pos "><span>PF2762</span>/<span>P136</span></span>, <span class="snp snp-pos "><span>PF2655</span>/<span>P138</span></span>, <span class="snp snp-pos "><span>PF2602</span>/<span>P141</span></span>, <span class="snp snp-pos "><span>PF2617</span>/<span>P145</span></span>, <span class="snp  "><span>PF2623</span>/<span>P146</span></span>, <span class="snp snp-pos "><span>PF2734</span>/<span>P148</span></span>, <span class="snp snp-pos "><span>PF2625</span>/<span>P151</span></span>, <span class="snp  "><span>PF2706</span>/<span>P158</span></span>, <span class="snp snp-pos "><span>PF2717</span>/<span>P159</span></span>, <span class="snp snp-pos "><span>PF2618</span>/<span>P160</span></span>, <span class="snp snp-pos "><span>PF2702</span>/<span>P166</span></span>, <span class="snp  "><span>PF2632</span>/<span>P187</span></span>, <span class="snp snp-pos "><span>M213</span>/<span>P137</span>/<span>PAGE38</span></span>, <span class="snp  snp-notGenoTested "><span>P133</span></span>, <span class="snp  snp-notGenoTested "><span>P134</span></span>, <span class="snp  snp-notGenoTested "><span>P139</span></span>, <span class="snp snp-pos "><span>P140</span></span>, <span class="snp  snp-notGenoTested "><span>P142</span></span>, <span class="snp snp-pos "><span>P149</span></span>, <span class="snp snp-pos "><span>P157</span></span>, <span class="snp  snp-notGenoTested "><span>P161</span></span>, <span class="snp snp-pos "><span>P163</span></span>, <span class="snp  snp-notGenoTested "><span>P316</span></span>&nbsp;<span class='tree-scores'></span></div>
+<div class='tree ' style = 'padding-left: 80px;'><span class='tree-hap '>IJK</span>&nbsp;&nbsp;<span class="snp  "><span>M523</span>/<span>L15</span>/<span>PF3492</span>/<span>S137</span></span>, <span class="snp  "><span>M522</span>/<span>L16</span>/<span>PF3493</span>/<span>S138</span></span>&nbsp;<span class='tree-scores'></span></div>
+<div class='tree pred-subclade' style = 'padding-left: 90px;'><span class='tree-hap '>K</span>&nbsp;&nbsp;<span class="snp snp-pos "><span>PF5504</span>/<span>P128</span></span>, <span class="snp snp-pos "><span>PF5493</span>/<span>P131</span></span>, <span class="snp snp-pos "><span>PF5480</span>/<span>P132</span></span>, <span class="snp snp-pos "><span>M9</span></span>&nbsp;<span class='tree-scores'></span></div>
+<div class='tree ' style = 'padding-left: 100px;'><span class='tree-hap '>K(xLT)</span>&nbsp;&nbsp;<span class="snp  "><span>M526</span>/<span>PF5979</span></span>&nbsp;<span class='tree-scores'></span></div>
+<div class='tree ' style = 'padding-left: 110px;'><span class='tree-hap '>P</span>&nbsp;&nbsp;<span class="snp  "><span>F180</span></span>, <span class="snp  "><span>F332</span></span>, <span class="snp  "><span>P207</span>/<span>P27</span></span>, <span class="snp snp-pos "><span>PF5869</span></span>, <span class="snp  "><span>F647</span></span>, <span class="snp  "><span>PF5956</span></span>, <span class="snp snp-pos "><span>P244</span></span>, <span class="snp  "><span>YSC0000186</span></span>, <span class="snp  "><span>YSC0000270</span></span>, <span class="snp  "><span>CTS10168</span></span>, <span class="snp  "><span>CTS3135</span></span>, <span class="snp  "><span>CTS3358</span></span>, <span class="snp  "><span>CTS4437</span></span>, <span class="snp  "><span>CTS5884</span></span>, <span class="snp snp-pos "><span>F115</span></span>, <span class="snp  "><span>F212</span></span>, <span class="snp  "><span>F29</span></span>, <span class="snp snp-pos "><span>F313</span></span>, <span class="snp  "><span>F344</span></span>, <span class="snp  "><span>F359</span></span>, <span class="snp  "><span>F4</span></span>, <span class="snp  "><span>F506</span></span>, <span class="snp snp-pos "><span>F556</span></span>, <span class="snp  "><span>F640</span></span>, <span class="snp  "><span>F671</span></span>, <span class="snp snp-pos "><span>F83</span></span>, <span class="snp  "><span>L471</span>/<span>PF5989</span></span>, <span class="snp  "><span>L721</span>/<span>PF6020</span></span>, <span class="snp  "><span>L768</span>/<span>PF5976</span>/<span>YSC0000274</span></span>, <span class="snp  "><span>L779</span>/<span>PF5907</span>/<span>YSC0000251</span></span>, <span class="snp  "><span>L82</span></span>, <span class="snp snp-pos "><span>M45</span>/<span>PF5962</span></span>, <span class="snp snp-pos "><span>P284</span></span>, <span class="snp snp-pos "><span>PAGES00083</span></span>, <span class="snp  "><span>PF5465</span></span>, <span class="snp  "><span>PF5468</span></span>, <span class="snp  "><span>PF5471</span></span>, <span class="snp  "><span>PF5851</span></span>, <span class="snp  "><span>PF5853</span></span>, <span class="snp  "><span>PF5854</span></span>, <span class="snp  "><span>PF5865</span></span>, <span class="snp  "><span>PF5871</span></span>, <span class="snp  "><span>PF5882</span></span>, <span class="snp  "><span>PF5886</span></span>, <span class="snp  "><span>PF5887</span></span>, <span class="snp  "><span>PF5888</span></span>, <span class="snp  "><span>PF5957</span></span>, <span class="snp  "><span>PF5964</span></span>, <span class="snp  "><span>PF5965</span></span>, <span class="snp snp-pos "><span>PF5982</span></span>, <span class="snp  "><span>YSC0000176</span></span>, <span class="snp  "><span>YSC0000205</span></span>, <span class="snp  "><span>YSC0000227</span></span>, <span class="snp  "><span>YSC0000279</span></span>, <span class="snp  "><span>L781</span>/<span>PF5875</span>/<span>YSC0000255</span></span>, <span class="snp snp-pos "><span>PF5879</span>/<span>P226</span></span>, <span class="snp snp-pos "><span>PF5927</span>/<span>P228</span></span>, <span class="snp snp-pos "><span>PF5925</span>/<span>P230</span></span>, <span class="snp snp-pos "><span>PF5946</span>/<span>P235</span></span>, <span class="snp snp-pos "><span>PF5873</span>/<span>P237</span></span>, <span class="snp snp-pos "><span>PF5897</span>/<span>P240</span></span>, <span class="snp snp-pos "><span>PF5874</span>/<span>P243</span></span>, <span class="snp snp-pos "><span>PF5941</span>/<span>P281</span></span>, <span class="snp snp-pos "><span>PF5932</span>/<span>P282</span></span>, <span class="snp snp-pos "><span>PF5966</span>/<span>P283</span></span>, <span class="snp snp-pos "><span>PF5866</span>/<span>P295</span>/<span>S8</span></span>, <span class="snp  "><span>L536</span>/<span>PF5860</span></span>&nbsp;<span class='tree-scores'></span></div>
+<div class='tree ' style = 'padding-left: 120px;'><span class='tree-hap '>R</span>&nbsp;&nbsp;<span class="snp  "><span>YSC0000232</span></span>, <span class="snp  "><span>F652</span></span>, <span class="snp  "><span>L747</span></span>, <span class="snp  "><span>F295</span></span>, <span class="snp  "><span>F33</span></span>, <span class="snp  "><span>F356</span></span>, <span class="snp  "><span>F47</span></span>, <span class="snp  "><span>F63</span></span>, <span class="snp  "><span>F82</span></span>, <span class="snp  "><span>PF5953</span></span>, <span class="snp  "><span>PF6063</span></span>, <span class="snp  "><span>YSC0000067</span></span>, <span class="snp  "><span>YSC0000179</span></span>, <span class="snp  "><span>YSC0000201</span></span>, <span class="snp  "><span>YSC0000233</span></span>, <span class="snp snp-pos "><span>M207</span>/<span>PAGE37</span>/<span>PF6038</span>/<span>UTY2</span></span>, <span class="snp snp-pos "><span>PF6019</span>/<span>P229</span></span>, <span class="snp snp-pos "><span>P232</span></span>, <span class="snp snp-pos "><span>PF6068</span>/<span>P280</span></span>, <span class="snp  "><span>PF6059</span>/<span>P285</span></span>, <span class="snp snp-pos "><span>P224</span></span>, <span class="snp snp-neg "><span>P227</span></span>, <span class="snp  snp-notGenoTested "><span>S4</span></span>, <span class="snp  snp-notGenoTested "><span>S9</span></span>&nbsp;<span class='tree-scores'></span></div>
+<div class='tree ' style = 'padding-left: 130px;'><span class='tree-hap '>R1</span>&nbsp;&nbsp;<span class="snp  "><span>PF6007</span></span>, <span class="snp  "><span>F211</span></span>, <span class="snp  "><span>F378</span></span>, <span class="snp  "><span>F93</span></span>, <span class="snp  "><span>PF6145</span></span>, <span class="snp  "><span>YSC0000182</span></span>, <span class="snp  "><span>YSC0000207</span></span>, <span class="snp  "><span>YSC0000230</span></span>, <span class="snp  "><span>YSC0000288</span></span>, <span class="snp snp-pos "><span>PF6128</span>/<span>P225</span></span>, <span class="snp snp-pos "><span>PF6142</span>/<span>P233</span></span>, <span class="snp snp-neg "><span>PF6137</span>/<span>P236</span></span>, <span class="snp  "><span>PF6113</span>/<span>P242</span></span>, <span class="snp  "><span>PF6117</span>/<span>P245</span></span>, <span class="snp  "><span>PF6136</span>/<span>P286</span></span>, <span class="snp snp-pos "><span>PF6115</span>/<span>P328</span></span>, <span class="snp snp-pos "><span>M173</span>/<span>P241</span>/<span>PAGE29</span></span>, <span class="snp snp-pos "><span>M306</span>/<span>S1</span></span>, <span class="snp  snp-notGenoTested "><span>P231</span></span>, <span class="snp snp-pos "><span>P234</span></span>, <span class="snp  snp-notGenoTested "><span>P294</span></span>&nbsp;<span class='tree-scores'></span></div>
+<div class='tree ' style = 'padding-left: 140px;'><span class='tree-hap '>R1b</span>&nbsp;&nbsp;<span class="snp  "><span>CTS2134</span></span>, <span class="snp  "><span>PF5466</span></span>, <span class="snp  "><span>PF6246</span></span>, <span class="snp  "><span>PF6250</span></span>, <span class="snp  "><span>PF6270</span></span>, <span class="snp  "><span>PF6272</span></span>, <span class="snp  "><span>YSC0000075</span></span>, <span class="snp snp-neg "><span>M343</span>/<span>PF6242</span></span>&nbsp;<span class='tree-scores'></span></div>
+<div class='tree ' style = 'padding-left: 150px;'><span class='tree-hap '>R1b1</span>&nbsp;&nbsp;<span class="snp  "><span>L506</span></span>, <span class="snp snp-neg "><span>L278</span></span>, <span class="snp  "><span>M415</span>/<span>PF6251</span></span>, <span class="snp  snp-notGenoTested "><span>P25</span><sup>R</sup></span>&nbsp;<span class='tree-scores'></span></div>
+<div class='tree ' style = 'padding-left: 160px;'><span class='tree-hap '>R1b1~1<sup>&sect;</sup></span>&nbsp;&nbsp;<span class="snp  "><span>L388</span></span>, <span class="snp snp-neg "><span>L389</span></span>&nbsp;<span class='tree-scores'></span></div>
+<div class='tree ' style = 'padding-left: 170px;'><span class='tree-hap '>R1b1a</span>&nbsp;&nbsp;<span class="snp snp-neg "><span>PF6438</span></span>, <span class="snp  "><span>L407</span></span>, <span class="snp  "><span>PF6506</span></span>, <span class="snp  "><span>PF6463</span></span>, <span class="snp snp-neg "><span>CTS5577</span></span>, <span class="snp  "><span>F1794</span></span>, <span class="snp  "><span>L482</span></span>, <span class="snp  "><span>CTS10834</span></span>, <span class="snp  "><span>CTS11468</span></span>, <span class="snp  "><span>CTS11985</span></span>, <span class="snp snp-neg "><span>CTS12478</span></span>, <span class="snp snp-neg "><span>CTS2664</span></span>, <span class="snp  "><span>CTS3575</span></span>, <span class="snp  "><span>CTS623</span></span>, <span class="snp  "><span>CTS7400</span></span>, <span class="snp  "><span>CTS7659</span></span>, <span class="snp  "><span>CTS8591</span></span>, <span class="snp  "><span>CTS8665</span></span>, <span class="snp  "><span>CTS8728</span></span>, <span class="snp  "><span>L483</span></span>, <span class="snp  "><span>L500</span></span>, <span class="snp  "><span>L502</span></span>, <span class="snp  "><span>L585</span></span>, <span class="snp  "><span>L752</span></span>, <span class="snp  "><span>L773</span></span>, <span class="snp snp-neg "><span>PF6091</span></span>, <span class="snp  "><span>PF6265</span></span>, <span class="snp  "><span>PF6409</span></span>, <span class="snp  "><span>PF6411</span></span>, <span class="snp  "><span>PF6424</span></span>, <span class="snp  "><span>PF6425</span></span>, <span class="snp  "><span>PF6430</span></span>, <span class="snp  "><span>PF6432</span></span>, <span class="snp  "><span>PF6434</span></span>, <span class="snp  "><span>PF6443</span></span>, <span class="snp  "><span>PF6494</span></span>, <span class="snp  "><span>PF6495</span></span>, <span class="snp  "><span>PF6498</span></span>, <span class="snp snp-neg "><span>PF6500</span></span>, <span class="snp  "><span>PF6507</span></span>, <span class="snp snp-neg "><span>PF6509</span></span>, <span class="snp  "><span>PF6524</span></span>, <span class="snp  "><span>s10</span></span>, <span class="snp  "><span>s3</span></span>, <span class="snp  "><span>YSC0000072</span></span>, <span class="snp  "><span>YSC0000166</span></span>, <span class="snp  "><span>YSC0000194</span></span>, <span class="snp  "><span>YSC0000203</span></span>, <span class="snp  "><span>YSC0000213</span></span>, <span class="snp  "><span>YSC0000219</span></span>, <span class="snp  "><span>YSC0000225</span></span>, <span class="snp  "><span>YSC0000269</span></span>, <span class="snp snp-neg "><span>YSC0000294</span></span>, <span class="snp snp-neg "><span>PF6398</span>/<span>P297</span></span>&nbsp;<span class='tree-scores'></span></div>
+<div class='tree ' style = 'padding-left: 180px;'><span class='tree-hap '>R1b1a2</span>&nbsp;&nbsp;<span class="snp  "><span>L265</span>/<span>PF6431</span></span>, <span class="snp snp-neg "><span>M269</span></span>, <span class="snp  snp-notGenoTested "><span>M520</span></span>, <span class="snp  snp-notGenoTested "><span>PF6485</span>/<span>S3</span></span>, <span class="snp  snp-notGenoTested "><span>PF6399</span>/<span>S10</span></span>, <span class="snp  snp-notGenoTested "><span>S13</span></span>, <span class="snp  snp-notGenoTested "><span>S17</span></span>&nbsp;<span class='tree-scores'></span></div>
+<div class='tree ' style = 'padding-left: 190px;'><span class='tree-hap '>R1b1a2a</span>&nbsp;&nbsp;<span class="snp  "><span>L150</span>/<span>PF6274</span><sup>R</sup></span>, <span class="snp  "><span>L23</span>/<span>PF6534</span>/<span>S141</span></span>, <span class="snp snp-neg "><span>L49</span>/<span>S349</span><sup>R</sup></span>&nbsp;<span class='tree-scores'></span></div>
+<div class='tree ' style = 'padding-left: 200px;'><span class='tree-hap '>R1b1a2a~1</span>&nbsp;&nbsp;<span class="snp  "><span>L478</span></span>, <span class="snp  "><span>PF6404</span></span>&nbsp;<span class='tree-scores'></span></div>
+<div class='tree ' style = 'padding-left: 210px;'><span class='tree-hap '>R1b1a2a1</span>&nbsp;&nbsp;<span class="snp snp-neg "><span>M412</span>/<span>L51</span>/<span>PF6536</span>/<span>S167</span></span>&nbsp;<span class='tree-scores'></span></div>
+<div class='tree ' style = 'padding-left: 220px;'><span class='tree-hap '>R1b1a2a1a</span>&nbsp;&nbsp;<span class="snp  "><span>L11</span>/<span>PF6539</span>/<span>S127</span></span>, <span class="snp snp-neg "><span>L151</span>/<span>PF6542</span></span>, <span class="snp  "><span>YSC0000082</span></span>, <span class="snp  "><span>YSC0000191</span></span>, <span class="snp snp-neg "><span>L52</span>/<span>PF6541</span></span>, <span class="snp  "><span>PF6546</span>/<span>P310</span>/<span>S129</span></span>&nbsp;<span class='tree-scores'></span></div>
+<div class='tree ' style = 'padding-left: 230px;'><span class='tree-hap not-geno-tested'>R1b1a2a1a2</span>&nbsp;&nbsp;<span class="snp  snp-notGenoTested "><span>P312</span>/<span>S116</span></span></div>
+<div class='tree ' style = 'padding-left: 240px;'><span class='tree-hap not-geno-tested'>R1b1a2a1a2a</span>&nbsp;&nbsp;<span class="snp  snp-notGenoTested "><span>DF27</span>/<span>S250</span></span></div>
+<div class='tree ' style = 'padding-left: 250px;'><span class='tree-hap '>R1b1a2a1a2a1</span>&nbsp;&nbsp;<span class="snp  "><span>Z195</span>/<span>S227</span></span>, <span class="snp  snp-notGenoTested "><span>Z196</span>/<span>S355</span></span>&nbsp;<span class='tree-scores'></span></div>
+<div class='tree ' style = 'padding-left: 260px;'><span class='tree-hap not-geno-tested'>R1b1a2a1a2a1b</span>&nbsp;&nbsp;<span class="snp  snp-notGenoTested "><span>L176</span>/<span>S179</span><sup>R</sup></span></div>
+<div class='tree ' style = 'padding-left: 270px;'><span class='tree-hap '>R1b1a2a1a2a1b~1</span>&nbsp;&nbsp;<span class="snp  "><span>Z198</span></span>&nbsp;<span class='tree-scores'></span></div>
+<div class='tree ' style = 'padding-left: 280px;'><span class='tree-hap '>R1b1a2a1a2a1b3</span>&nbsp;&nbsp;<span class="snp  "><span>CTS4188</span></span>&nbsp;<span class='tree-scores'></span></div><div class='tree ' style = 'padding-left: 290px;'><span class='tree-hap '>R1b1a2a1a2a1b3~1</span>&nbsp;&nbsp;<span class="snp  "><span>L797</span>/<span>PF2016</span>/<span>Z1146</span></span>&nbsp;<span class='tree-scores'></span></div><div class='tree ' style = 'padding-left: 300px;'><span class='tree-hap '>R1b1a2a1a2a1b3~1~1</span>&nbsp;&nbsp;<span class="snp  "><span>F672</span></span>&nbsp;<span class='tree-scores'></span></div><div class='tree ' style = 'padding-left: 300px;'><span class='tree-hap '>R1b1a2a1a2a1b3~1~2</span>&nbsp;&nbsp;<span class="snp  "><span>F756</span></span>, <span class="snp  "><span>PF1285</span></span>, <span class="snp  "><span>PF3346</span></span>, <span class="snp  "><span>V89</span>/<span>PF1359</span></span>&nbsp;<span class='tree-scores'></span></div><div class='tree pred-subclade' style = 'padding-left: 290px;'><span class='tree-hap '>R1b1a2a1a2a1b3~2</span>&nbsp;&nbsp;<span class="snp  "><span>L421</span></span>, <span class="snp  "><span>L433</span></span>, <span class="snp snp-pos "><span>L88</span><sup>R</sup></span>&nbsp;<span class='tree-scores'></span></div>
+</div><div class = 'ascent hidden' id='ascent-4' style='position:relative;'><h4 id = 'ascent-4-top' style='display:inline;'>Examining: N1a [N-M96 (N-CTS7095, N-P189)]</h4><P>This suggested classification does not account for the following positive SNPs: <BR><textarea rows = 5 cols = 50 spellcheck='false' autocomplete='off'>CLFY16971
+CLFY18665
+CLFY4966
+CTS11948
+CTS12028
+CTS3229
+CTS4557
+CTS5808
+CTS5815
+CTS6327
+CTS8626
+F115
+F1857
+F313
+F556
+F83
+FB1947
+FB988
+FGC12056
+FGC199
+FGC24468
+FGC38
+FGC54
+FGC77
+FN1317
+FN495
+FN591
+FN833
+L1346
+L486
+L63
+L88
+L882
+M1185
+M1188
+M1189
+M1219
+M1226
+M1239
+M1272
+M141
+M17
+M173
+M198
+M207
+M2695
+M288
+M306
+M3639
+M3683
+M3698
+M3707
+M3735
+M3749
+M3771
+M45
+M511
+M514
+M515
+M5705
+M672
+M696
+M74
+M9118
+M9336
+N12
+P102
+P103
+P117
+P222
+P224
+P225
+P226
+P228
+P229
+P230
+P232
+P233
+P234
+P235
+P236
+P237
+P238
+P239
+P240
+P241
+P243
+P244
+P280
+P281
+P282
+P283
+P284
+P295
+P32
+P38
+P80
+PAGES00007
+PAGES00026
+PAGES00029
+PAGES00037
+PAGES00038
+PAGES00081
+PAGES00083
+PF1580
+PF2587
+PF2660
+PF2669
+PF2673
+PF2679
+PF2686
+PF2692
+PF2703
+PF2720
+PF2730
+PF2771
+PF2775
+PF3558
+PF3708
+PF518
+PF5505
+PF5506
+PF5861
+PF5863
+PF5866
+PF5869
+PF5870
+PF5873
+PF5874
+PF5879
+PF5896
+PF5897
+PF5901
+PF5915
+PF5925
+PF5927
+PF5930
+PF5932
+PF5934
+PF5941
+PF5946
+PF5951
+PF5962
+PF5963
+PF5966
+PF5977
+PF5982
+PF6019
+PF6036
+PF6050
+PF6115
+PF6126
+PF6147
+PF6203
+PF6234
+PF6238
+PF6240
+PF6276
+PF:14231292(A|G)
+PF:14432928(A|G)
+PF:14639427(C|A)
+PF:14692227(C|T)
+PF:14958218(C|T)
+PF:14993358(G|A)
+PF:15027529(T|G)
+PF:15086183(C|G)
+PF:16492547(T|C)
+PF:16971648(G|T)
+PF:18026855(A|G)
+PF:18109555(A|C)
+PF:18656508(C|G)
+PF:18865298(T|C)
+PF:18914441(T|C)
+PF:19179540(A|G)
+PF:21409706(C|G)
+PF:21410840(T|G)
+PF:22190371(G|A)
+PF:22739367(C|T)
+PF:23476936(T|G)
+PF:28590278(A|G)
+PF:28733101(G|C)
+PF:2887824(A|C)
+S1
+S118
+S24307
+S26596
+S26597
+S26598
+S27130
+S27150
+S27154
+S27177
+S27244
+S27310
+S27390
+S27470
+S27500
+S27554
+S27700
+U250
+YSC0000222
+YSC0001265
+Z11996
+Z8133
+Z8143
+Z8146</textarea><BR><P><div class='tree ' style = 'padding-left: 0px;'><span class='tree-hap not-geno-tested'>Root (Y-Adam)</span>&nbsp;&nbsp;</div>
+<div class='tree ' style = 'padding-left: 10px;'><span class='tree-hap not-geno-tested'>A0-T</span>&nbsp;&nbsp;<span class="snp  snp-notGenoTested "><span>AF3</span></span>, <span class="snp  snp-notGenoTested "><span>L1085</span></span>, <span class="snp  snp-notGenoTested "><span>L1089</span></span>, <span class="snp  snp-notGenoTested "><span>L1090</span></span>, <span class="snp  snp-notGenoTested "><span>L1093</span></span>, <span class="snp  snp-notGenoTested "><span>L1095</span></span>, <span class="snp  snp-notGenoTested "><span>L1098</span></span>, <span class="snp  snp-notGenoTested "><span>L1099</span></span>, <span class="snp  snp-notGenoTested "><span>L1101</span></span>, <span class="snp  snp-notGenoTested "><span>L1105</span></span>, <span class="snp  snp-notGenoTested "><span>L1116</span></span>, <span class="snp  snp-notGenoTested "><span>L1118</span></span>, <span class="snp  snp-notGenoTested "><span>L1120</span></span>, <span class="snp  snp-notGenoTested "><span>L1121</span></span>, <span class="snp  snp-notGenoTested "><span>L1123</span></span>, <span class="snp  snp-notGenoTested "><span>L1124</span></span>, <span class="snp  snp-notGenoTested "><span>L1125</span></span>, <span class="snp  snp-notGenoTested "><span>L1127</span></span>, <span class="snp  snp-notGenoTested "><span>L1128</span></span>, <span class="snp  snp-notGenoTested "><span>L1129</span></span>, <span class="snp  snp-notGenoTested "><span>L1130</span></span>, <span class="snp  snp-notGenoTested "><span>L1132</span></span>, <span class="snp  snp-notGenoTested "><span>L1135</span></span>, <span class="snp  snp-notGenoTested "><span>L1136</span></span>, <span class="snp  snp-notGenoTested "><span>L1137</span></span>, <span class="snp  snp-notGenoTested "><span>L1142</span></span>, <span class="snp  snp-notGenoTested "><span>L1143</span></span>, <span class="snp  snp-notGenoTested "><span>L1145</span></span>, <span class="snp  snp-notGenoTested "><span>L1150</span></span>, <span class="snp  snp-notGenoTested "><span>L1155</span></span>, <span class="snp  snp-notGenoTested "><span>L1235</span></span></div>
+<div class='tree ' style = 'padding-left: 20px;'><span class='tree-hap '>A1</span>&nbsp;&nbsp;<span class="snp  "><span>CTS3331</span></span>, <span class="snp  "><span>P305</span></span>, <span class="snp  "><span>V168</span></span>, <span class="snp  "><span>V171</span></span>, <span class="snp  "><span>V174</span></span>, <span class="snp  "><span>V238</span></span>, <span class="snp  "><span>V241</span></span>, <span class="snp  "><span>V250</span></span>, <span class="snp  snp-notGenoTested "><span>L985</span></span>, <span class="snp  snp-notGenoTested "><span>L986</span></span>, <span class="snp  snp-notGenoTested "><span>L989</span></span>, <span class="snp  snp-notGenoTested "><span>L1002</span></span>, <span class="snp  snp-notGenoTested "><span>L1003</span></span>, <span class="snp  snp-notGenoTested "><span>L1004</span></span>, <span class="snp  snp-notGenoTested "><span>L1005</span></span>, <span class="snp  snp-notGenoTested "><span>L1009</span></span>, <span class="snp  snp-notGenoTested "><span>L1013</span></span>, <span class="snp  snp-notGenoTested "><span>L1053</span></span>, <span class="snp  snp-notGenoTested "><span>L1084</span></span>, <span class="snp  snp-notGenoTested "><span>L1112</span></span>, <span class="snp  snp-notGenoTested "><span>L1153</span></span>, <span class="snp  snp-notGenoTested "><span>V161</span><sup>R</sup></span>&nbsp;<span class='tree-scores'></span></div>
+<div class='tree ' style = 'padding-left: 30px;'><span class='tree-hap '>A1b</span>&nbsp;&nbsp;<span class="snp  "><span>P108</span></span>, <span class="snp  "><span>V221</span></span>&nbsp;<span class='tree-scores'></span></div>
+<div class='tree ' style = 'padding-left: 40px;'><span class='tree-hap '>BT</span>&nbsp;&nbsp;<span class="snp  "><span>M139</span></span>, <span class="snp snp-pos "><span>M42</span></span>, <span class="snp snp-pos "><span>M94</span>/<span>PF1081</span></span>, <span class="snp  "><span>L440</span></span>, <span class="snp  "><span>L1061</span>/<span>PF1101</span></span>, <span class="snp  "><span>L1062</span>/<span>PF302</span></span>, <span class="snp snp-pos "><span>PK1</span></span>, <span class="snp  "><span>PF1407</span>/<span>V29</span></span>, <span class="snp  "><span>PF1411</span>/<span>V59</span></span>, <span class="snp  "><span>PF1412</span>/<span>V64</span></span>, <span class="snp  "><span>PF1406</span>/<span>V102</span></span>, <span class="snp  "><span>V187</span></span>, <span class="snp  snp-notGenoTested "><span>L413</span>/<span>PF1409</span>/<span>V31</span></span>, <span class="snp  snp-notGenoTested "><span>L418</span></span>, <span class="snp  snp-notGenoTested "><span>L438</span></span>, <span class="snp  snp-notGenoTested "><span>L604</span>/<span>PF1243</span></span>, <span class="snp  snp-notGenoTested "><span>L957</span></span>, <span class="snp  snp-notGenoTested "><span>L962</span></span>, <span class="snp  snp-notGenoTested "><span>L969</span></span>, <span class="snp  snp-notGenoTested "><span>L970</span>/<span>PF1065</span></span>, <span class="snp  snp-notGenoTested "><span>L971</span></span>, <span class="snp  snp-notGenoTested "><span>L977</span></span>, <span class="snp  snp-notGenoTested "><span>L1060</span>/<span>PF1021</span></span>, <span class="snp  snp-notGenoTested "><span>M91</span></span>, <span class="snp snp-pos "><span>M299</span></span>, <span class="snp  snp-notGenoTested "><span>P97</span></span>, <span class="snp snp-neg "><span>PAGE65</span>/<span>SRY1532</span>/<span>SRY10831</span><sup>R</sup></span>, <span class="snp  snp-notGenoTested "><span>V202</span></span>, <span class="snp  snp-notGenoTested "><span>PF1410</span>/<span>V235</span></span>&nbsp;<span class='tree-scores'></span></div>
+<div class='tree ' style = 'padding-left: 50px;'><span class='tree-hap '>CT</span>&nbsp;&nbsp;<span class="snp  "><span>PF1269</span></span>, <span class="snp  "><span>PF258</span></span>, <span class="snp  "><span>CTS125</span></span>, <span class="snp  "><span>CTS5318</span></span>, <span class="snp  "><span>PF954</span></span>, <span class="snp snp-pos "><span>M294</span></span>, <span class="snp  "><span>PF779</span></span>, <span class="snp  "><span>PF110</span></span>, <span class="snp  "><span>PF821</span></span>, <span class="snp  "><span>PF1276</span></span>, <span class="snp  "><span>V189</span></span>, <span class="snp  "><span>PF192</span></span>, <span class="snp  "><span>CTS10362</span></span>, <span class="snp  "><span>CTS109</span></span>, <span class="snp  "><span>CTS11358</span></span>, <span class="snp  "><span>CTS11575</span></span>, <span class="snp  "><span>CTS1996</span></span>, <span class="snp  "><span>CTS3431</span></span>, <span class="snp  "><span>CTS3662</span></span>, <span class="snp  "><span>CTS4364</span></span>, <span class="snp  "><span>CTS4368</span></span>, <span class="snp  "><span>CTS4740</span></span>, <span class="snp  "><span>CTS5457</span></span>, <span class="snp  "><span>CTS5532</span></span>, <span class="snp  "><span>CTS6383</span></span>, <span class="snp  "><span>CTS6800</span></span>, <span class="snp  "><span>CTS6907</span></span>, <span class="snp  "><span>CTS7922</span></span>, <span class="snp  "><span>CTS7933</span></span>, <span class="snp  "><span>CTS8243</span></span>, <span class="snp  "><span>CTS8980</span></span>, <span class="snp  "><span>CTS9828</span></span>, <span class="snp snp-pos "><span>M168</span>/<span>PF1416</span></span>, <span class="snp  "><span>PF1016</span></span>, <span class="snp  "><span>PF1029</span></span>, <span class="snp  "><span>PF1031</span></span>, <span class="snp  "><span>PF1040</span></span>, <span class="snp  "><span>PF1046</span></span>, <span class="snp  "><span>PF1061</span></span>, <span class="snp  "><span>PF1092</span></span>, <span class="snp  "><span>PF1097</span></span>, <span class="snp  "><span>PF1203</span></span>, <span class="snp  "><span>PF210</span></span>, <span class="snp  "><span>PF212</span></span>, <span class="snp  "><span>PF223</span></span>, <span class="snp  "><span>PF234</span></span>, <span class="snp  "><span>PF263</span></span>, <span class="snp  "><span>PF272</span></span>, <span class="snp  "><span>PF278</span></span>, <span class="snp  "><span>PF292</span></span>, <span class="snp  "><span>PF316</span></span>, <span class="snp  "><span>PF325</span></span>, <span class="snp  "><span>PF342</span></span>, <span class="snp  "><span>PF500</span></span>, <span class="snp  "><span>PF667</span></span>, <span class="snp  "><span>PF719</span></span>, <span class="snp  "><span>PF725</span></span>, <span class="snp  "><span>PF796</span></span>, <span class="snp  "><span>PF803</span></span>, <span class="snp  "><span>PF815</span></span>, <span class="snp  "><span>PF840</span></span>, <span class="snp  "><span>PF844</span></span>, <span class="snp  "><span>PF892</span></span>, <span class="snp  "><span>PF937</span></span>, <span class="snp  "><span>PF951</span></span>, <span class="snp  "><span>PF970</span></span>, <span class="snp  "><span>V52</span></span>, <span class="snp  "><span>V9</span></span>, <span class="snp  snp-notGenoTested "><span>P9</span><sup>R</sup></span>&nbsp;<span class='tree-scores'></span></div>
+<div class='tree ' style = 'padding-left: 60px;'><span class='tree-hap not-geno-tested'>CF</span>&nbsp;&nbsp;<span class="snp snp-pos "><span>P143</span></span></div>
+<div class='tree ' style = 'padding-left: 70px;'><span class='tree-hap '>F</span>&nbsp;&nbsp;<span class="snp  "><span>F2048</span></span>, <span class="snp snp-pos "><span>PF2745</span></span>, <span class="snp  "><span>F2075</span></span>, <span class="snp  "><span>PF2631</span></span>, <span class="snp  "><span>F1320</span></span>, <span class="snp  "><span>F2142</span></span>, <span class="snp  "><span>F1302</span></span>, <span class="snp  "><span>F3111</span></span>, <span class="snp  "><span>F2710</span></span>, <span class="snp  "><span>F2985</span></span>, <span class="snp  "><span>L498</span></span>, <span class="snp  "><span>PF2599</span></span>, <span class="snp  "><span>CTS11726</span></span>, <span class="snp snp-pos "><span>CTS12632</span></span>, <span class="snp  "><span>CTS3536</span></span>, <span class="snp  "><span>CTS3654</span></span>, <span class="snp snp-neg "><span>CTS3868</span></span>, <span class="snp  "><span>CTS3996</span></span>, <span class="snp  "><span>CTS4443</span></span>, <span class="snp  "><span>CTS6135</span></span>, <span class="snp  "><span>F1046</span></span>, <span class="snp  "><span>F1209</span></span>, <span class="snp  "><span>F1329</span></span>, <span class="snp  "><span>F1704</span></span>, <span class="snp  "><span>F1714</span></span>, <span class="snp  "><span>F1753</span></span>, <span class="snp snp-pos "><span>F1767</span></span>, <span class="snp  "><span>F2155</span></span>, <span class="snp  "><span>F2402</span></span>, <span class="snp  "><span>F2587</span></span>, <span class="snp  "><span>F2688</span></span>, <span class="snp  "><span>F2837</span></span>, <span class="snp  "><span>F2993</span></span>, <span class="snp  "><span>F3136</span></span>, <span class="snp  "><span>F3335</span></span>, <span class="snp  "><span>F3556</span></span>, <span class="snp  "><span>F3692</span></span>, <span class="snp  "><span>F719</span></span>, <span class="snp snp-pos "><span>L350</span></span>, <span class="snp  "><span>L468</span></span>, <span class="snp snp-pos "><span>L470</span></span>, <span class="snp snp-pos "><span>PF2591</span></span>, <span class="snp  "><span>PF2593</span></span>, <span class="snp  "><span>PF2600</span></span>, <span class="snp  "><span>PF2608</span></span>, <span class="snp  "><span>PF2611</span></span>, <span class="snp  "><span>PF2615</span></span>, <span class="snp  "><span>PF2624</span></span>, <span class="snp  "><span>PF2643</span></span>, <span class="snp  "><span>PF2747</span></span>, <span class="snp  "><span>PF2748</span></span>, <span class="snp  "><span>PF2749</span></span>, <span class="snp  "><span>PF2770</span></span>, <span class="snp  "><span>V186</span></span>, <span class="snp  "><span>V205</span></span>, <span class="snp  "><span>L132</span><sup>R</sup></span>, <span class="snp snp-pos "><span>M89</span>/<span>PF2746</span></span>, <span class="snp  "><span>M235</span>/<span>PAGE80</span>/<span>PF2665</span></span>, <span class="snp snp-pos "><span>PF2704</span>/<span>P14</span></span>, <span class="snp snp-pos "><span>PF2741</span>/<span>P135</span></span>, <span class="snp snp-pos "><span>PF2762</span>/<span>P136</span></span>, <span class="snp snp-pos "><span>PF2655</span>/<span>P138</span></span>, <span class="snp snp-pos "><span>PF2602</span>/<span>P141</span></span>, <span class="snp snp-pos "><span>PF2617</span>/<span>P145</span></span>, <span class="snp  "><span>PF2623</span>/<span>P146</span></span>, <span class="snp snp-pos "><span>PF2734</span>/<span>P148</span></span>, <span class="snp snp-pos "><span>PF2625</span>/<span>P151</span></span>, <span class="snp  "><span>PF2706</span>/<span>P158</span></span>, <span class="snp snp-pos "><span>PF2717</span>/<span>P159</span></span>, <span class="snp snp-pos "><span>PF2618</span>/<span>P160</span></span>, <span class="snp snp-pos "><span>PF2702</span>/<span>P166</span></span>, <span class="snp  "><span>PF2632</span>/<span>P187</span></span>, <span class="snp snp-pos "><span>M213</span>/<span>P137</span>/<span>PAGE38</span></span>, <span class="snp  snp-notGenoTested "><span>P133</span></span>, <span class="snp  snp-notGenoTested "><span>P134</span></span>, <span class="snp  snp-notGenoTested "><span>P139</span></span>, <span class="snp snp-pos "><span>P140</span></span>, <span class="snp  snp-notGenoTested "><span>P142</span></span>, <span class="snp snp-pos "><span>P149</span></span>, <span class="snp snp-pos "><span>P157</span></span>, <span class="snp  snp-notGenoTested "><span>P161</span></span>, <span class="snp snp-pos "><span>P163</span></span>, <span class="snp  snp-notGenoTested "><span>P316</span></span>&nbsp;<span class='tree-scores'></span></div>
+<div class='tree ' style = 'padding-left: 80px;'><span class='tree-hap '>IJK</span>&nbsp;&nbsp;<span class="snp  "><span>M523</span>/<span>L15</span>/<span>PF3492</span>/<span>S137</span></span>, <span class="snp  "><span>M522</span>/<span>L16</span>/<span>PF3493</span>/<span>S138</span></span>&nbsp;<span class='tree-scores'></span></div>
+<div class='tree pred-subclade' style = 'padding-left: 90px;'><span class='tree-hap '>K</span>&nbsp;&nbsp;<span class="snp snp-pos "><span>PF5504</span>/<span>P128</span></span>, <span class="snp snp-pos "><span>PF5493</span>/<span>P131</span></span>, <span class="snp snp-pos "><span>PF5480</span>/<span>P132</span></span>, <span class="snp snp-pos "><span>M9</span></span>&nbsp;<span class='tree-scores'></span></div>
+<div class='tree ' style = 'padding-left: 100px;'><span class='tree-hap '>K(xLT)</span>&nbsp;&nbsp;<span class="snp  "><span>M526</span>/<span>PF5979</span></span>&nbsp;<span class='tree-scores'></span></div>
+<div class='tree ' style = 'padding-left: 110px;'><span class='tree-hap '>K(xLT)~1</span>&nbsp;&nbsp;<span class="snp  "><span>F549</span></span>, <span class="snp  "><span>F650</span></span>&nbsp;<span class='tree-scores'></span></div>
+<div class='tree ' style = 'padding-left: 120px;'><span class='tree-hap '>NO</span>&nbsp;&nbsp;<span class="snp snp-neg "><span>P195</span></span>, <span class="snp  "><span>CTS5858</span></span>, <span class="snp  "><span>F156</span></span>, <span class="snp  "><span>F306</span></span>, <span class="snp  "><span>F3566</span></span>, <span class="snp  "><span>F415</span></span>, <span class="snp  "><span>F468</span></span>, <span class="snp  "><span>F53</span></span>, <span class="snp  "><span>F658</span></span>, <span class="snp snp-neg "><span>M214</span>/<span>PAGE39</span></span>, <span class="snp snp-neg "><span>P192</span></span>, <span class="snp snp-neg "><span>P193</span></span>, <span class="snp snp-neg "><span>P194</span></span>, <span class="snp snp-neg "><span>P188</span></span>&nbsp;<span class='tree-scores'></span></div>
+<div class='tree ' style = 'padding-left: 130px;'><span class='tree-hap '>N</span>&nbsp;&nbsp;<span class="snp  "><span>F2344</span></span>, <span class="snp  "><span>F769</span></span>, <span class="snp  "><span>F1061</span></span>, <span class="snp  "><span>CTS10117</span></span>, <span class="snp  "><span>CTS1653</span></span>, <span class="snp  "><span>CTS2652</span></span>, <span class="snp  "><span>CTS2947</span></span>, <span class="snp  "><span>CTS3734</span></span>, <span class="snp  "><span>CTS568</span></span>, <span class="snp  "><span>CTS7433</span></span>, <span class="snp  "><span>CTS813</span></span>, <span class="snp  "><span>CTS8687</span></span>, <span class="snp  "><span>CTS8893</span></span>, <span class="snp  "><span>F1052</span></span>, <span class="snp  "><span>F1053</span></span>, <span class="snp  "><span>F1068</span></span>, <span class="snp  "><span>F1257</span></span>, <span class="snp  "><span>F1357</span></span>, <span class="snp  "><span>F1359</span></span>, <span class="snp  "><span>F1529</span></span>, <span class="snp  "><span>F1715</span></span>, <span class="snp  "><span>F1815</span></span>, <span class="snp  "><span>F1951</span></span>, <span class="snp  "><span>F2080</span></span>, <span class="snp  "><span>F2088</span></span>, <span class="snp  "><span>F2201</span></span>, <span class="snp  "><span>F2509</span></span>, <span class="snp  "><span>F2571</span></span>, <span class="snp  "><span>F2692</span></span>, <span class="snp  "><span>F2783</span></span>, <span class="snp  "><span>F2919</span></span>, <span class="snp  "><span>F2968</span></span>, <span class="snp  "><span>F2981</span></span>, <span class="snp  "><span>F2999</span></span>, <span class="snp  "><span>F3108</span></span>, <span class="snp  "><span>F3123</span></span>, <span class="snp  "><span>F3227</span></span>, <span class="snp  "><span>F3235</span></span>, <span class="snp  "><span>F3299</span></span>, <span class="snp  "><span>F3308</span></span>, <span class="snp  "><span>F3426</span></span>, <span class="snp  "><span>F3518</span></span>, <span class="snp  "><span>F3641</span></span>, <span class="snp  "><span>F3693</span></span>, <span class="snp  "><span>F3694</span></span>, <span class="snp  "><span>L394</span></span>, <span class="snp  "><span>L667</span></span>, <span class="snp  "><span>L734</span></span>, <span class="snp  "><span>M232</span></span>, <span class="snp snp-neg "><span>M231</span>/<span>PAGE91</span></span>&nbsp;<span class='tree-scores'></span></div>
+<div class='tree ' style = 'padding-left: 140px;'><span class='tree-hap not-geno-tested'>N1</span>&nbsp;&nbsp;<span class="snp  snp-notGenoTested "><span>LLY22G</span><sup>R</sup></span></div><div class='tree pred-subclade' style = 'padding-left: 150px;'><span class='tree-hap '>N1a</span>&nbsp;&nbsp;<span class="snp snp-pos "><span>M96</span>/<span>PF1823</span></span>, <span class="snp  "><span>CTS7095</span></span>, <span class="snp snp-neg "><span>P189</span><sup>R</sup></span>&nbsp;<span class='tree-scores'></span></div><div class='tree ' style = 'padding-left: 150px;'><span class='tree-hap '>N1b</span>&nbsp;&nbsp;<span class="snp  "><span>L732</span></span>&nbsp;<span class='tree-scores'></span></div><div class='tree ' style = 'padding-left: 160px;'><span class='tree-hap '>N1b1</span>&nbsp;&nbsp;<span class="snp  "><span>L731</span></span>, <span class="snp  "><span>L733</span></span>&nbsp;<span class='tree-scores'></span></div><div class='tree ' style = 'padding-left: 150px;'><span class='tree-hap '>N1~1</span>&nbsp;&nbsp;<span class="snp  "><span>F3436</span></span>, <span class="snp  "><span>F963</span></span>, <span class="snp  "><span>F3312</span></span>, <span class="snp  "><span>CTS10907</span></span>, <span class="snp  "><span>CTS11448</span></span>, <span class="snp  "><span>CTS11710</span></span>, <span class="snp  "><span>CTS5221</span></span>, <span class="snp  "><span>F1206</span></span>, <span class="snp  "><span>F1427</span></span>, <span class="snp  "><span>F1941</span></span>, <span class="snp  "><span>F2049</span></span>, <span class="snp  "><span>F2130</span></span>, <span class="snp  "><span>F2156</span></span>, <span class="snp  "><span>F2420</span></span>, <span class="snp  "><span>F2552</span></span>, <span class="snp  "><span>F2567</span></span>, <span class="snp  "><span>F2598</span></span>, <span class="snp  "><span>F3002</span></span>, <span class="snp  "><span>F3094</span></span>, <span class="snp  "><span>F3117</span></span>, <span class="snp  "><span>F3485</span></span>, <span class="snp  "><span>F3606</span></span>, <span class="snp  "><span>L735</span></span>, <span class="snp snp-neg "><span>PAGES00056</span></span>&nbsp;<span class='tree-scores'></span></div><div class='tree ' style = 'padding-left: 160px;'><span class='tree-hap not-geno-tested'>N1c</span>&nbsp;&nbsp;<span class="snp  snp-notGenoTested "><span>L729</span></span></div><div class='tree ' style = 'padding-left: 170px;'><span class='tree-hap '>N1c1</span>&nbsp;&nbsp;<span class="snp  "><span>CTS7404</span></span>, <span class="snp  "><span>CTS10064</span></span>, <span class="snp  "><span>CTS10889</span></span>, <span class="snp  "><span>CTS11941</span></span>, <span class="snp  "><span>CTS1678</span></span>, <span class="snp  "><span>CTS439</span></span>, <span class="snp  "><span>CTS5631</span></span>, <span class="snp  "><span>CTS6069</span></span>, <span class="snp  "><span>CTS622</span></span>, <span class="snp  "><span>CTS6336</span></span>, <span class="snp  "><span>CTS6991</span></span>, <span class="snp  "><span>CTS8346</span></span>, <span class="snp  "><span>F2584</span></span>, <span class="snp  "><span>F3331</span></span>, <span class="snp  "><span>F3354</span></span>, <span class="snp  "><span>F3573</span></span>, <span class="snp  "><span>F3823</span></span>, <span class="snp  "><span>F4115</span></span>, <span class="snp  "><span>F4218</span></span>, <span class="snp  "><span>F4325</span></span>, <span class="snp  "><span>L395</span></span>, <span class="snp  "><span>L549</span></span>, <span class="snp  "><span>CTS7728</span></span>, <span class="snp  "><span>F2996</span></span>, <span class="snp snp-neg "><span>M46</span>/<span>PAGE70</span>/<span>TAT</span></span>&nbsp;<span class='tree-scores'></span></div><div class='tree ' style = 'padding-left: 170px;'><span class='tree-hap '>N1c2</span>&nbsp;&nbsp;<span class="snp  "><span>CTS2262</span></span>, <span class="snp  "><span>CTS5223</span></span>, <span class="snp  "><span>CTS6380</span></span>, <span class="snp  "><span>F1007</span></span>, <span class="snp  "><span>F1360</span></span>, <span class="snp  "><span>F2017</span></span>, <span class="snp  "><span>F2209</span></span>, <span class="snp  "><span>F2392</span></span>, <span class="snp  "><span>F2700</span></span>, <span class="snp  "><span>F3013</span></span>, <span class="snp  "><span>F3163</span></span>, <span class="snp  "><span>F3290</span></span>, <span class="snp  "><span>F3665</span></span>, <span class="snp  "><span>F4309</span></span>, <span class="snp  snp-notGenoTested "><span>L666</span></span>&nbsp;<span class='tree-scores'></span></div>
+</div>
+<script  nonce='742fc2c2458c2cd098466d53aae9d0931b48f4efc58125ef724810f3df79723ccaf8346980bbe9de65bf1d2bb1428a6db526770c8869a5bdd28399d511a85d73' >
+var selPredRadios = getElementsByClassName(document.body, 'predTableRadio');
+for (var i = 0; i < selPredRadios.length; i++) {selPredRadios[i].addEventListener('click', changePredTableFocusHelper);}
+document.getElementsByName('selPTShg')[0].click();</script>
+<noscript>This page requires you to have Javascript enabled.</noscript>
+<script  nonce='742fc2c2458c2cd098466d53aae9d0931b48f4efc58125ef724810f3df79723ccaf8346980bbe9de65bf1d2bb1428a6db526770c8869a5bdd28399d511a85d73' >
+    document.getElementById("ReturnToInput").addEventListener('click', function() {window.location="https://ytree.morleydna.com/";_paq.push(["trackEvent", "returnToInput","click"]);});
+</script>
+<div id='wholeTree' class='hidden'></div></div><div id='mid-right'><p>
+<small>If you found this useful, consider making a small donation:</small>
+<ul><li><form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank" >
+<input type="hidden" name="cmd" value="_donations">
+<input type="hidden" name="business" value="MorleyDNADonations@gmail.com">
+<input type="hidden" name="lc" value="GB">
+£<input type="text" name="amount" value="6" size=3>
+<input type="hidden" name="item_name" value="MorleyDNA.com Y-SNP Predictor">
+<input type="hidden" name="no_note" value="0">
+<input type="hidden" name="currency_code" value="GBP">
+<input type="hidden" name="bn" value="PP-DonationsBF:btn_donateCC_LG.gif:NonHostedGuest">
+<!--<input type="image" src="https://www.paypalobjects.com/en_GB/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!"> -->
+<input type="submit" style="font-size: 8pt;white-space: normal;" name="submit" value="Paypal Donation (GBP)" alt="PayPal - The safer, easier way to pay online!" id="donateGBP" dType="PP-GBP">
+</form></li>
+
+<li><form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank" >
+<input type="hidden" name="cmd" value="_donations">
+<input type="hidden" name="business" value="MorleyDNADonations@gmail.com">
+<input type="hidden" name="lc" value="US">
+$<input type="text" name="amount" value="10" size=3>
+<input type="hidden" name="item_name" value="MorleyDNA.com Y-SNP Predictor">
+<input type="hidden" name="no_note" value="0">
+<input type="hidden" name="currency_code" value="USD">
+<input type="hidden" name="bn" value="PP-DonationsBF:btn_donateCC_LG.gif:NonHostedGuest">
+<!--<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!"> -->
+<input type="submit" style="font-size: 8pt;white-space: normal;" name="submit" value="Paypal Donation (USD)" alt="PayPal - The safer, easier way to pay online!" id="donateUSD" dType="PP-USD">
+</form></li>
+
+<!--
+<li><form action="https://www.familytreedna.com/group-general-fund-contribution.aspx?g=Morley" method="post" target="_blank" >
+<input type="submit" style="font-size: 8pt;white-space: normal;" name="submit"  value="Paypal Donation (USD) to the Morley DNA Project General Fund" alt="Donate to the Morley Y-DNA Project General Fund, via Paypal" id="donateGF" dType="GF">
+</form></li>
+-->
+</ul>
+<p>
+If you know any people surnamed Morley, please tell them about MorleyDNA.com and ask them to have a male Morley relative Y-DNA-tested!
+<!--[<a href="">more info</a>]-->
+
+<script  nonce='742fc2c2458c2cd098466d53aae9d0931b48f4efc58125ef724810f3df79723ccaf8346980bbe9de65bf1d2bb1428a6db526770c8869a5bdd28399d511a85d73' >
+    function dHelper(e) {
+        d('Donate', e.target.getAttribute("dType"));
+    }
+    document.getElementById("donateUSD").addEventListener('click', dHelper);
+    document.getElementById("donateGBP").addEventListener('click', dHelper);
+    //document.getElementById("donateGF").addEventListener('click', dHelper);
+</script>
+
+</div></div></div></div><div id="footer">
+<a name = "License"></a>
+<a name = "Licence"></a>
+<small>The MorleyDNA.com Y-SNP Subclade Predictor and experimental Y phylogeny are copyright &copy; 2013-2024 Chris Morley. All rights reserved. Licensed for non-commercial use under the Creative Commons <a href="http://creativecommons.org/licenses/by-nc-nd/3.0/" target="_blank">Attribution-NonCommercial-NoDerivs 3.0 Unported</a> license, with the additional condition that the underlying experimental Y phylogeny cannot be used in other prediction/classification software without the author's prior permission. Genetic genealogical consultants, businesses and others looking to use the predictor and/or experimental phylogeny as part of a for-profit activity must <a href="http://www.MorleyDNA.com/contact" target="_blank">contact the author</a> to discuss licensing. Visitors relying on any information do so at their own risk. Use of this service is subject to this <a target="_blank" href="privacy-policy">privacy policy</a></small>
+
+
+<script type="text/javascript"  nonce='742fc2c2458c2cd098466d53aae9d0931b48f4efc58125ef724810f3df79723ccaf8346980bbe9de65bf1d2bb1428a6db526770c8869a5bdd28399d511a85d73' >
+  var _paq = _paq || [];
+  _paq.push(["setDoNotTrack", true]);
+//web browser's accept-language setting -- curious what proportion of users prefer something other than English
+_paq.push(['setCustomDimension', 1, 'en-US,en q0.9']); 
+
+//how many CPU cores the device has
+_paq.push(['setCustomDimension', 2, navigator.hardwareConcurrency || "n/a"]); 
+
+ _paq.push(['enableLinkTracking', true]);
+  _paq.push(['trackPageView']);
+ 
+
+
+  (function() {
+    var u="//seneschal.morleydna.com/piwik/";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 3]);
+    
+    //_paq.push(['addTracker', '//piwik.uat.morleyofportlaw.com/piwik.php', 4]);
+
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+<noscript><img src="//seneschal.morleydna.com/piwik/piwik.php?idsite=3&rec=1&url=/predict&action_name=noscript&bots=1&urlref=https://ytree.morleydna.com/&rand=564493867" style="border:0;" alt="" /></noscript>
+
+
+</div></div></div>	<div id='summary-modal-outer'>
+		<div id='summary-modal-inner'>
+		These are the most likely classifications for your Y-SNP data:
+		<br>
+		<textarea id='summary-modal-textarea' readonly rows='5'>* R1a1a [R1a-L168 (R1a-M17, R1a-M198)]
+* M3 [M-P117 (M-P118)]
+* K [K-PF5504 (K-PF5493, K-PF5480)]
+* R1b1a2a1a2a1b3~2 [R1b-L421 (R1b-L433, R1b-L88)]
+* N1a [N-M96 (N-CTS7095, N-P189)]</textarea>
+		<br>
+		<button id='summary-modal-button'>Close summary</button>
+		</div>
+	</div>
+	<script  nonce='742fc2c2458c2cd098466d53aae9d0931b48f4efc58125ef724810f3df79723ccaf8346980bbe9de65bf1d2bb1428a6db526770c8869a5bdd28399d511a85d73' >
+		var el = document.getElementById('summary-modal-button');
+		if(el !== null) el.addEventListener('click', closeSummaryModal);
+
+		el = document.getElementById('summary-modal-show')
+		if(el !== null) el.addEventListener('click', showSummaryModal);
+	</script></body></html>
